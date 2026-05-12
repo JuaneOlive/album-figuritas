@@ -8,6 +8,7 @@ const serverPort = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 app.get('/api/figuritas', async (req, res) => {
   try {

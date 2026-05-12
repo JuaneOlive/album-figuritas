@@ -1,42 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Álbum Mundial 2026™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;600;700;800;900&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Manejo de figuritas del mundial</h1>
-  <h2>Gestioná tus figuritas</h2>
 
-  <button id="loadStickersButton" type="button">Cargar figuritas</button>
-  <button id="loadOwnedStickersButton" type="button">Cargar figuritas obtenidas</button>
-  <button id="loadMissingStickersButton" type="button">Cargar figuritas faltantes</button>
-  <button id="clearStickersButton" type="button">Limpiar figuritas</button>
+  <!-- ── NAVEGACIÓN ─────────────────────────────────────────────────── -->
+  <nav class="fwc-nav" role="navigation" aria-label="Navegación principal">
+    <span class="fwc-nav__logo">FWC <span>26</span></span>
+    <div class="fwc-nav__flags" aria-hidden="true">
+      <span class="fwc-nav__flag fwc-nav__flag--usa">
+        <span class="fwc-nav__flag-dot"></span>USA
+      </span>
+      <span class="fwc-nav__flag fwc-nav__flag--can">
+        <span class="fwc-nav__flag-dot"></span>CAN
+      </span>
+      <span class="fwc-nav__flag fwc-nav__flag--mex">
+        <span class="fwc-nav__flag-dot"></span>MEX
+      </span>
+    </div>
+  </nav>
 
+  <!-- ── TICKER ─────────────────────────────────────────────────────── -->
+  <div class="fwc-ticker" role="marquee" aria-label="Info del torneo">
+    <div class="fwc-ticker__track">
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>We Are 26</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 equipos · 3 países · 16 sedes</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
+      <!-- duplicado para loop seamless -->
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>We Are 26</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 equipos · 3 países · 16 sedes</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
+      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
+    </div>
+  </div>
 
-  <table> 
-    <thead>
-      <tr>
-        <th>CODIGO</th>
-        <th>TIPO</th>
-        <th>CANTIDAD</th>
-      </tr>
-    </thead>
-    <tbody id="stickersTableBody">
-    </tbody>
-  </table>
+  <!-- ── CONTENIDO PRINCIPAL ────────────────────────────────────────── -->
+  <main class="fwc-main">
 
-  <br></br>
-  
-  <form id="addStickerForm">
-    <select id="addStickerSelect" name="addStickerSelect">
-      <option value="">Seleccione una figurita</option>
-    </select>
-    <button id="addStickerButton" type="button">Agregar figurita</button>
-    <button id="removeStickerButton" type="button">Quitar figurita</button>
-  </form>
+    <!-- Header -->
+    <header class="fwc-header">
+      <h1>Álbum <span class="accent">Mundial</span> 2026</h1>
+      <h2>Gestioná tus figuritas</h2>
+    </header>
+
+    <hr class="fwc-divider" />
+
+    <!-- Botonera de filtros -->
+    <div class="fwc-filter-bar" role="group" aria-label="Filtros de figuritas">
+      <button id="loadStickersButton"        type="button">Todas</button>
+      <button id="loadOwnedStickersButton"   type="button">Obtenidas</button>
+      <button id="loadMissingStickersButton" type="button">Faltantes</button>
+      <button id="clearStickersButton"       type="button">Limpiar</button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="fwc-table-wrap">
+      <table aria-label="Tabla de figuritas">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Cant.</th>
+          </tr>
+        </thead>
+        <tbody id="stickersTableBody">
+          <tr>
+            <td colspan="3" class="fwc-table-empty">Cargá las figuritas para empezar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="fwc-divider" />
+
+    <!-- Formulario agregar/quitar -->
+    <section class="fwc-form" aria-labelledby="form-title">
+      <p class="fwc-form__title" id="form-title">Actualizar figurita</p>
+      <form id="addStickerForm">
+        <div class="fwc-form__row">
+          <select id="addStickerSelect" name="addStickerSelect" aria-label="Seleccionar figurita">
+            <option value="">Seleccione una figurita</option>
+          </select>
+          <button id="addStickerButton"    type="button">+ Agregar</button>
+          <button id="removeStickerButton" type="button">– Quitar</button>
+        </div>
+      </form>
+    </section>
+
+  </main>
 
   <script src="app.js"></script>
 </body>
