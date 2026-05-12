@@ -11,7 +11,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init-db": "node scripts/initDb.js"
+    "init-db": "node scripts/initDb.js",
+    "start": "npm run init-db ; node app.js"
   },
   "keywords": [],
   "author": "",
