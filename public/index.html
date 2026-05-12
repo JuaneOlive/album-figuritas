@@ -31,8 +31,10 @@
   <br></br>
   
   <form id="formAgregarFigurita">
-    <input id="inputAgregarFigurita" type="text" placeholder="Código de la figurita"/>
-    <button onclick="submitAgregarFigurita()" type="button">Agregar figurita</button>
+    <select id="SelectAgregarFigurita" name="SelectAgregarFigurita">
+      <option value="">Seleccione una figurita</option>
+    </select>
+    <button onclick="patchFigurita()" type="button">Agregar figurita</button>
   </form>
 
   <script src="app.js"></script>

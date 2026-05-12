@@ -49,24 +49,57 @@ async function cargarFiguritas(filtro) {
     renderTablaFiguritas(await obtenerFiguritas(filtro));
 }
 
-async function submitAgregarFigurita() {
-
-}
-
 async function populateFiguritas() {    
-    figuritasRaw = await obtenerFiguritas("faltantes");
+
+    const select = document.getElementById("SelectAgregarFigurita");
+
+    const selectCopy = document.createElement("select");
+        selectCopy.id = select.id;
+        selectCopy.name = select.name;
+
+
+    
+    optionVacia = document.createElement("option");
+    optionVacia.value = "";
+    optionVacia.textContent = "Seleccione una figurita";
+    selectCopy.appendChild(optionVacia);
+
+    figuritasRaw = await obtenerFiguritas();
+   
     figuritasRaw.forEach(figurita => {
         const option = document.createElement("option");
         option.value = figurita.nombre;
         option.textContent = figurita.nombre;
-        document.getElementById("SelectAgregarFigurita").appendChild(option);
+        selectCopy.appendChild(option); 
     });
 
-    
+    select.parentNode.replaceChild(selectCopy, select);
     
 }
 
-document.getElementById("btnCargarFiguritas").addEventListener("click", () => cargarFiguritas("todas"));
+
+
+async function patchFigurita() {
+    
+    const nombreFigurita = document.getElementById("SelectAgregarFigurita").value;
+    
+    if (!nombreFigurita) {
+        alert("Por favor, seleccione una figurita para agregar.");
+        return;
+    }
+
+    const res = await fetch(`${API_BASE_URL}/${nombreFigurita}`, {
+        method: "PATCH"
+    });
+
+    if (!res.ok) {
+        console.error("Error al agregar figurita:", res.statusText);
+        alert("Error al agregar figurita. Por favor, intente nuevamente.");
+        return;
+    }
+}
+
+document.getElementById("btnCargarFiguritas").addEventListener("click", () => cargarFiguritas());
 
 document.getElementById("btnCargarFiguritasObtenidas").addEventListener("click", () => cargarFiguritas("pegadas"));
 

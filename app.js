@@ -32,16 +32,25 @@ app.get('/api/figuritas', async (req, res) => {
 
 app.patch('/api/figuritas/:nombre', async (req, res) => {
   try {
+    
     const nombre = req.params.nombre.toUpperCase();
+    
+      if (!nombre) {
+      return res.status(400).json({ error: 'Parametro invalido' });
+    }
 
     const figurita = await Figurita.findOne({
       where: { nombre },
       include: [{ model: TipoFigurita, as: 'tipo' }]
     });
 
+    
+
     if (!figurita) {
       return res.status(404).json({ error: 'Figurita no encontrada' });
     }
+
+    
 
     figurita.cantidad += 1;
     figurita.obtenida = figurita.cantidad > 0;
