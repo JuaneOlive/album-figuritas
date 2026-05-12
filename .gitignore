@@ -1,4 +1,6 @@
 # Ignorar carpeta node_modules
 node_modules/
-#Ignorar datos
-datos/
+
+# Ignorar bases de datos locales
+data/*.sqlite
+data/*.sqlite-*

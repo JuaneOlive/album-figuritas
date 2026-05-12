@@ -11,11 +11,11 @@ export async function inicializarTipos() {
   console.log('Inicializando los tipos de figuritas...');
 
   await TipoFigurita.bulkCreate([
-    { nombre: 'jugador' },
-    { nombre: 'escudo' },
-    { nombre: 'formación' },
-    { nombre: 'coca-cola' },
-    { nombre: 'fwc' }
+    { nombre: 'Jugador' },
+    { nombre: 'Escudo' },
+    { nombre: 'Formación' },
+    { nombre: 'Coca-Cola' },
+    { nombre: 'FWC' }
   ]);
 
   console.log('Tipos inicializados con éxito.');

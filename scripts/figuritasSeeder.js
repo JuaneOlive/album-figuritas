@@ -15,12 +15,13 @@ const equipos = [
 function crearDiccionarioTipos(tipos) {
   return tipos.reduce((diccionario, tipo) => {
     diccionario[tipo.nombre] = tipo.id;
+    diccionario[tipo.nombre.toLowerCase()] = tipo.id;
     return diccionario;
   }, {});
 }
 
 function validarTiposRequeridos(tiposPorNombre) {
-  const tiposRequeridos = ['jugador', 'escudo', 'formación', 'coca-cola', 'fwc'];
+  const tiposRequeridos = ['Jugador', 'Escudo', 'Formación', 'Coca-Cola', 'FWC'];
   const tiposFaltantes = tiposRequeridos.filter((tipo) => !tiposPorNombre[tipo]);
 
   if (tiposFaltantes.length > 0) {
@@ -35,7 +36,8 @@ function generarFiguritas(tiposPorNombre) {
     figuritas.push({
       numero,
       nombre: `FWC${numero}`,
-      tipoId: tiposPorNombre.fwc
+      tipoId: tiposPorNombre.fwc,
+      cantidad: 0
     });
   }
 
@@ -54,7 +56,8 @@ function generarFiguritas(tiposPorNombre) {
       figuritas.push({
         numero,
         nombre: `${equipo}${numero}`,
-        tipoId
+        tipoId,
+        cantidad: 0
       });
     }
   }
@@ -63,7 +66,8 @@ function generarFiguritas(tiposPorNombre) {
     figuritas.push({
       numero,
       nombre: `CC${numero}`,
-      tipoId: tiposPorNombre['coca-cola']
+      tipoId: tiposPorNombre['coca-cola'],
+      cantidad: 0
     });
   }
 

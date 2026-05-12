@@ -17,13 +17,22 @@ Figurita.init({
     },
     nombre:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     obtenida:{
         type: DataTypes.BOOLEAN,
         defaultValue: false, 
-        allowNull: false
+        allowNull: false,
     },
+    cantidad: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+        validate: {
+            min: 0
+        }
+    }
 
 }, {
     sequelize,
