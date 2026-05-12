@@ -82,12 +82,15 @@ function clearStickersTable() {
 }
 
 async function getStickers(filter) {
+    let url;
 
-    let url = STICKERS_API_URL + (
-            filter
-                ? `?obtenida=${filter === "pegadas"}`
-                : ""
-        );
+    if (filter === "pegadas" || filter === "faltantes") {
+        url = STICKERS_API_URL + `?obtenida=${filter === "pegadas"}`;
+    } else {
+        url = STICKERS_API_URL;
+    }
+
+
 
 
     const res = await fetch(url);
@@ -183,5 +186,7 @@ document.getElementById("clearStickersButton").addEventListener("click", clearSt
 document.getElementById("addStickerButton").addEventListener("click", () => patchSticker("add"));
 
 document.getElementById("removeStickerButton").addEventListener("click", () => patchSticker("remove"));
+
+
 
 

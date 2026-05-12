@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import Sticker from './models/Figurita.js';
 import StickerType from './models/TipoFigurita.js';
+import { Op } from 'sequelize';
 
 const app = express();
 const serverPort = process.env.PORT || 3000;
