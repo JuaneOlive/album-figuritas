@@ -1,110 +1,115 @@
+const STICKERS_API_URL = "http://localhost:3000/api/figuritas";
 
-const API_BASE_URL = "http://localhost:3000/api/figuritas";
-
-function renderTablaFiguritas(Figuritas) {
-    const tb = document.getElementById("table-body-figuritas");
-    tb.innerHTML = "";
-    Figuritas.forEach(Figurita => {
+function renderStickersTable(stickers) {
+    const tableBody = document.getElementById("stickersTableBody");
+    tableBody.innerHTML = "";
+    stickers.forEach(sticker => {
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${Figurita.nombre}</td>
-                         <td>${Figurita.tipo.nombre}</td>
-                         <td>${Figurita.cantidad}</td>
+        row.innerHTML = `<td>${sticker.nombre}</td>
+                         <td>${sticker.tipo.nombre}</td>
+                         <td>${sticker.cantidad}</td>
                          `;
-        tb.appendChild(row);
+        tableBody.appendChild(row);
     });
 }
 
-function vaciarFiguritas() {
-    const tb = document.getElementById("table-body-figuritas");
-    tb.innerHTML = "";
+function clearStickersTable() {
+    const tableBody = document.getElementById("stickersTableBody");
+    tableBody.innerHTML = "";
 }
 
-async function obtenerFiguritas(filtro) {
+async function getStickers(filter) {
 
-    let url = API_BASE_URL + (
-            filtro 
-                ? `?obtenida=${filtro === "pegadas"}` 
+    let url = STICKERS_API_URL + (
+            filter
+                ? `?obtenida=${filter === "pegadas"}`
                 : ""
-        ); 
-        
+        );
+
 
     const res = await fetch(url);
-    
+
     if (!res.ok) {
         console.error("Error al cargar figuritas:", res.statusText);
         return;
     }
-    
-    const datos = await res.json();
 
-    return datos.map(d => ({
-        nombre: d.nombre,
-        tipo: d.tipo,
-        cantidad: d.cantidad
+    const data = await res.json();
+
+    return data.map(item => ({
+        nombre: item.nombre,
+        tipo: item.tipo,
+        cantidad: item.cantidad
     }));
 
 }
 
-async function cargarFiguritas(filtro) {
-    renderTablaFiguritas(await obtenerFiguritas(filtro));
+async function loadStickers(filter) {
+    renderStickersTable(await getStickers(filter));
 }
 
-async function populateFiguritas() {    
+async function populateStickers() {
 
-    const select = document.getElementById("SelectAgregarFigurita");
+    const select = document.getElementById("addStickerSelect");
 
     const selectCopy = document.createElement("select");
         selectCopy.id = select.id;
         selectCopy.name = select.name;
 
 
-    
-    optionVacia = document.createElement("option");
-    optionVacia.value = "";
-    optionVacia.textContent = "Seleccione una figurita";
-    selectCopy.appendChild(optionVacia);
 
-    figuritasRaw = await obtenerFiguritas();
-   
-    figuritasRaw.forEach(figurita => {
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "Seleccione una figurita";
+    selectCopy.appendChild(emptyOption);
+
+    const rawStickers = await getStickers();
+
+    rawStickers.forEach(sticker => {
         const option = document.createElement("option");
-        option.value = figurita.nombre;
-        option.textContent = figurita.nombre;
-        selectCopy.appendChild(option); 
+        option.value = sticker.nombre;
+        option.textContent = sticker.nombre;
+        selectCopy.appendChild(option);
     });
 
     select.parentNode.replaceChild(selectCopy, select);
-    
+
 }
 
 
 
-async function patchFigurita() {
-    
-    const nombreFigurita = document.getElementById("SelectAgregarFigurita").value;
-    
-    if (!nombreFigurita) {
+async function patchSticker(operation) {
+
+    const stickerName = document.getElementById("addStickerSelect").value;
+
+    if (!stickerName) {
         alert("Por favor, seleccione una figurita para agregar.");
         return;
     }
 
-    const res = await fetch(`${API_BASE_URL}/${nombreFigurita}`, {
+    const res = await fetch(`${STICKERS_API_URL}/${stickerName}?operation=${operation}`, {
         method: "PATCH"
     });
 
     if (!res.ok) {
-        console.error("Error al agregar figurita:", res.statusText);
-        alert("Error al agregar figurita. Por favor, intente nuevamente.");
+        const errorData = await res.json();
+        const errorMessage = errorData.error || "Error al actualizar figurita. Por favor, intente nuevamente.";
+        console.error("Error al actualizar figurita:", errorMessage);
+        alert(errorMessage);
         return;
     }
 }
 
-document.getElementById("btnCargarFiguritas").addEventListener("click", () => cargarFiguritas());
+document.getElementById("loadStickersButton").addEventListener("click", () => loadStickers());
 
-document.getElementById("btnCargarFiguritasObtenidas").addEventListener("click", () => cargarFiguritas("pegadas"));
+document.getElementById("loadOwnedStickersButton").addEventListener("click", () => loadStickers("pegadas"));
 
-document.getElementById("btnCargarFiguritasFaltantes").addEventListener("click", () => cargarFiguritas("faltantes"));
+document.getElementById("loadMissingStickersButton").addEventListener("click", () => loadStickers("faltantes"));
 
-document.getElementById("btnLimpiarFiguritas").addEventListener("click", vaciarFiguritas);
+document.getElementById("clearStickersButton").addEventListener("click", clearStickersTable);
 
-populateFiguritas();
+document.getElementById("addStickerButton").addEventListener("click", () => patchSticker("add"));
+
+document.getElementById("removeStickerButton").addEventListener("click", () => patchSticker("remove"));
+
+populateStickers();

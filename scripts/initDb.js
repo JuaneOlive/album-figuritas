@@ -1,22 +1,22 @@
-import sequelize from '../data/db.js';
+import databaseConnection from '../data/db.js';
 import '../models/Figurita.js';
-import { inicializarTipos} from './tiposSeeder.js';
-import { inicializarFiguritas } from './figuritasSeeder.js';
+import { initializeStickerTypes } from './tiposSeeder.js';
+import { initializeStickers } from './figuritasSeeder.js';
 
-async function main() {
+async function initializeDatabase() {
     try {
-        await sequelize.authenticate();
-        await sequelize.sync({force:true});
-        await inicializarTipos();
-        await inicializarFiguritas();
+        await databaseConnection.authenticate();
+        await databaseConnection.sync({force:true});
+        await initializeStickerTypes();
+        await initializeStickers();
         console.log("Base de datos creada e inicializada");
     }
     catch (error) {
         console.error("Error al conectar a la base de datos:", error);
-    }    
+    }
     finally {
         process.exit();
-    }   
+    }
 }
 
-main();
+initializeDatabase();

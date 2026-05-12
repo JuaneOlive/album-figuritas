@@ -1,9 +1,9 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../data/db.js";
+import databaseConnection from "../data/db.js";
 
-class TipoFigurita extends Model {}
+class StickerType extends Model {}
 
-TipoFigurita.init({
+StickerType.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -15,10 +15,10 @@ TipoFigurita.init({
         allowNull: false
     },
 }, {
-    sequelize,
+    sequelize: databaseConnection,
     modelName: 'TipoFigurita',
     tableName: 'tipos_figuritas',
     timestamps: false
 });
 
-export default TipoFigurita;
+export default StickerType;

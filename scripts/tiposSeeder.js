@@ -1,16 +1,16 @@
-import TipoFigurita from '../models/TipoFigurita.js';
+import StickerType from '../models/TipoFigurita.js';
 
-export async function inicializarTipos() {
-  const cantidad = await TipoFigurita.count();
+export async function initializeStickerTypes() {
+  const existingTypeCount = await StickerType.count();
 
-  if (cantidad > 0) {
+  if (existingTypeCount > 0) {
     console.log('Ya existen tipos cargados, no se inicializa.');
     return;
   }
 
   console.log('Inicializando los tipos de figuritas...');
 
-  await TipoFigurita.bulkCreate([
+  await StickerType.bulkCreate([
     { nombre: 'Jugador' },
     { nombre: 'Escudo' },
     { nombre: 'Formación' },

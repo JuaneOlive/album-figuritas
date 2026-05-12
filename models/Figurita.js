@@ -1,11 +1,11 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../data/db.js";
-import TipoFigurita from "./TipoFigurita.js";
+import databaseConnection from "../data/db.js";
+import StickerType from "./TipoFigurita.js";
 
 
-class Figurita extends Model {}
+class Sticker extends Model {}
 
-Figurita.init({
+Sticker.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -35,14 +35,14 @@ Figurita.init({
     }
 
 }, {
-    sequelize,
+    sequelize: databaseConnection,
     modelName: 'Figurita',
     tableName: 'figuritas',
     timestamps: false
 });
 
-Figurita.belongsTo(TipoFigurita,{as: 'tipo', foreignKey: 'tipoId', field: 'tipoId'});
+Sticker.belongsTo(StickerType,{as: 'tipo', foreignKey: 'tipoId', field: 'tipoId'});
 
-TipoFigurita.hasMany(Figurita,{foreignKey: 'tipoId', as: 'figuritas'});
+StickerType.hasMany(Sticker,{foreignKey: 'tipoId', as: 'figuritas'});
 
-export default Figurita;
+export default Sticker;

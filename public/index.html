@@ -10,10 +10,10 @@
   <h1>Manejo de figuritas del mundial</h1>
   <h2>Gestioná tus figuritas</h2>
 
-  <button id="btnCargarFiguritas" type="button">Cargar figuritas</button>
-  <button id="btnCargarFiguritasObtenidas" type="button">Cargar figuritas obtenidas</button>
-  <button id="btnCargarFiguritasFaltantes" type="button">Cargar figuritas faltantes</button>
-  <button id="btnLimpiarFiguritas" type="button">Limpiar figuritas</button>
+  <button id="loadStickersButton" type="button">Cargar figuritas</button>
+  <button id="loadOwnedStickersButton" type="button">Cargar figuritas obtenidas</button>
+  <button id="loadMissingStickersButton" type="button">Cargar figuritas faltantes</button>
+  <button id="clearStickersButton" type="button">Limpiar figuritas</button>
 
 
   <table> 
@@ -24,17 +24,18 @@
         <th>CANTIDAD</th>
       </tr>
     </thead>
-    <tbody id="table-body-figuritas">
+    <tbody id="stickersTableBody">
     </tbody>
   </table>
 
   <br></br>
   
-  <form id="formAgregarFigurita">
-    <select id="SelectAgregarFigurita" name="SelectAgregarFigurita">
+  <form id="addStickerForm">
+    <select id="addStickerSelect" name="addStickerSelect">
       <option value="">Seleccione una figurita</option>
     </select>
-    <button onclick="patchFigurita()" type="button">Agregar figurita</button>
+    <button id="addStickerButton" type="button">Agregar figurita</button>
+    <button id="removeStickerButton" type="button">Quitar figurita</button>
   </form>
 
   <script src="app.js"></script>

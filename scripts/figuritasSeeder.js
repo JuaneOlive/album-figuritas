@@ -1,9 +1,9 @@
-import sequelize from '../data/db.js';
-import Figurita from '../models/Figurita.js';
-import TipoFigurita from '../models/TipoFigurita.js';
+import databaseConnection from '../data/db.js';
+import Sticker from '../models/Figurita.js';
+import StickerType from '../models/TipoFigurita.js';
 import { pathToFileURL } from 'url';
 
-const equipos = [
+const teamCodes = [
   'MEX', 'CAN', 'USA', 'HAI', 'CUW', 'PAN', 'BRA', 'PAR',
   'ECU', 'ARG', 'URU', 'COL', 'CZE', 'BIH', 'SUI', 'SCO',
   'TUR', 'GER', 'NED', 'SWE', 'BEL', 'ESP', 'FRA', 'NOR',
@@ -12,99 +12,99 @@ const equipos = [
   'JPN', 'IRN', 'KSA', 'IRQ', 'JOR', 'UZB', 'NZL', 'AUS'
 ];
 
-function crearDiccionarioTipos(tipos) {
-  return tipos.reduce((diccionario, tipo) => {
-    diccionario[tipo.nombre] = tipo.id;
-    diccionario[tipo.nombre.toLowerCase()] = tipo.id;
-    return diccionario;
+function createTypeDictionary(stickerTypes) {
+  return stickerTypes.reduce((typeDictionary, stickerType) => {
+    typeDictionary[stickerType.nombre] = stickerType.id;
+    typeDictionary[stickerType.nombre.toLowerCase()] = stickerType.id;
+    return typeDictionary;
   }, {});
 }
 
-function validarTiposRequeridos(tiposPorNombre) {
-  const tiposRequeridos = ['Jugador', 'Escudo', 'Formación', 'Coca-Cola', 'FWC'];
-  const tiposFaltantes = tiposRequeridos.filter((tipo) => !tiposPorNombre[tipo]);
+function validateRequiredTypes(typesByName) {
+  const requiredTypes = ['Jugador', 'Escudo', 'Formación', 'Coca-Cola', 'FWC'];
+  const missingTypes = requiredTypes.filter((typeName) => !typesByName[typeName]);
 
-  if (tiposFaltantes.length > 0) {
-    throw new Error(`Faltan tipos de figurita en la base: ${tiposFaltantes.join(', ')}`);
+  if (missingTypes.length > 0) {
+    throw new Error(`Faltan tipos de figurita en la base: ${missingTypes.join(', ')}`);
   }
 }
 
-function generarFiguritas(tiposPorNombre) {
-  const figuritas = [];
+function generateStickers(typesByName) {
+  const stickers = [];
 
-  for (let numero = 1; numero <= 19; numero++) {
-    figuritas.push({
-      numero,
-      nombre: `FWC${numero}`,
-      tipoId: tiposPorNombre.fwc,
+  for (let stickerNumber = 1; stickerNumber <= 19; stickerNumber++) {
+    stickers.push({
+      numero: stickerNumber,
+      nombre: `FWC${stickerNumber}`,
+      tipoId: typesByName.fwc,
       cantidad: 0
     });
   }
 
-  for (const equipo of equipos) {
-    for (let numero = 1; numero <= 20; numero++) {
-      let tipoId = tiposPorNombre.jugador;
+  for (const teamCode of teamCodes) {
+    for (let stickerNumber = 1; stickerNumber <= 20; stickerNumber++) {
+      let stickerTypeId = typesByName.jugador;
 
-      if (numero === 1) {
-        tipoId = tiposPorNombre.escudo;
+      if (stickerNumber === 1) {
+        stickerTypeId = typesByName.escudo;
       }
 
-      if (numero === 13) {
-        tipoId = tiposPorNombre.formación;
+      if (stickerNumber === 13) {
+        stickerTypeId = typesByName.formación;
       }
 
-      figuritas.push({
-        numero,
-        nombre: `${equipo}${numero}`,
-        tipoId,
+      stickers.push({
+        numero: stickerNumber,
+        nombre: `${teamCode}${stickerNumber}`,
+        tipoId: stickerTypeId,
         cantidad: 0
       });
     }
   }
 
-  for (let numero = 1; numero <= 14; numero++) {
-    figuritas.push({
-      numero,
-      nombre: `CC${numero}`,
-      tipoId: tiposPorNombre['coca-cola'],
+  for (let stickerNumber = 1; stickerNumber <= 14; stickerNumber++) {
+    stickers.push({
+      numero: stickerNumber,
+      nombre: `CC${stickerNumber}`,
+      tipoId: typesByName['coca-cola'],
       cantidad: 0
     });
   }
 
-  return figuritas;
+  return stickers;
 }
 
-export async function inicializarFiguritas() {
-  const cantidad = await Figurita.count();
+export async function initializeStickers() {
+  const existingStickerCount = await Sticker.count();
 
-  if (cantidad > 0) {
+  if (existingStickerCount > 0) {
     console.log('Ya existen figuritas cargadas, no se inicializa.');
     return;
   }
 
-  const tipos = await TipoFigurita.findAll();
-  const tiposPorNombre = crearDiccionarioTipos(tipos);
+  const stickerTypes = await StickerType.findAll();
+  const typesByName = createTypeDictionary(stickerTypes);
 
-  validarTiposRequeridos(tiposPorNombre);
+  validateRequiredTypes(typesByName);
 
-  const figuritas = generarFiguritas(tiposPorNombre);
+  const stickers = generateStickers(typesByName);
 
-  await Figurita.bulkCreate(figuritas);
-  console.log(`${figuritas.length} figuritas inicializadas con éxito.`);
+  await Sticker.bulkCreate(stickers);
+  console.log(`${stickers.length} figuritas inicializadas con éxito.`);
 }
 
-async function main() {
+async function runStickerSeeder() {
   try {
-    await sequelize.authenticate();
-    await inicializarFiguritas();
+    await databaseConnection.authenticate();
+    await initializeStickers();
   } catch (error) {
     console.error('Error al inicializar figuritas:', error);
     process.exitCode = 1;
   } finally {
-    await sequelize.close();
+    await databaseConnection.close();
   }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main();
+  runStickerSeeder();
 }

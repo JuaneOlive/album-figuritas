@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import Figurita from './models/Figurita.js';
-import TipoFigurita from './models/TipoFigurita.js';
+import Sticker from './models/Figurita.js';
+import StickerType from './models/TipoFigurita.js';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const serverPort = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -12,18 +12,18 @@ app.use(express.json());
 app.get('/api/figuritas', async (req, res) => {
   try {
     const { obtenida } = req.query;
-    const where = {};
+    const stickerFilters = {};
 
     if (obtenida !== undefined) {
-      where.obtenida = obtenida === 'true';
+      stickerFilters.obtenida = obtenida === 'true';
     }
 
-    const figuritas = await Figurita.findAll({
-      where,
-      include: [{ model: TipoFigurita, as: 'tipo' }]
+    const stickers = await Sticker.findAll({
+      where: stickerFilters,
+      include: [{ model: StickerType, as: 'tipo' }]
     });
 
-    res.status(200).json(figuritas);
+    res.status(200).json(stickers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener las figuritas' });
@@ -32,37 +32,44 @@ app.get('/api/figuritas', async (req, res) => {
 
 app.patch('/api/figuritas/:nombre', async (req, res) => {
   try {
-    
-    const nombre = req.params.nombre.toUpperCase();
-    
-      if (!nombre) {
+    const stickerName = req.params.nombre.toUpperCase();
+    const operation = req.query.operation;
+    if (!stickerName) {
       return res.status(400).json({ error: 'Parametro invalido' });
     }
 
-    const figurita = await Figurita.findOne({
-      where: { nombre },
-      include: [{ model: TipoFigurita, as: 'tipo' }]
+    const sticker = await Sticker.findOne({
+      where: { nombre: stickerName },
+      include: [{ model: StickerType, as: 'tipo' }]
     });
 
-    
-
-    if (!figurita) {
+    if (!sticker) {
       return res.status(404).json({ error: 'Figurita no encontrada' });
     }
 
+    if (operation === "add") {
+      sticker.cantidad += 1;
+      sticker.obtenida = true;
+    }
+    else if (operation === "remove") {
+      if (sticker.cantidad <= 0) {
+        return res.status(400).json({ error: 'No se pueden tener cantidades negativas' });
+      }
+      sticker.cantidad -= 1;
+      sticker.obtenida = sticker.cantidad > 0;
+    } else {
+      return res.status(400).json({ error: 'Operacion no valida' });
+    }
     
+    await sticker.save();
 
-    figurita.cantidad += 1;
-    figurita.obtenida = figurita.cantidad > 0;
-    await figurita.save();
-
-    res.status(200).json(figurita);
+    res.status(200).json(sticker);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al actualizar la figurita' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor de la API corriendo en http://localhost:${port}`);
+app.listen(serverPort, () => {
+  console.log(`Servidor de la API corriendo en http://localhost:${serverPort}`);
 });
