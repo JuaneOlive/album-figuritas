@@ -37,6 +37,7 @@
   /* Tipografía */
   --fwc-font-display: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
   --fwc-font-body:    'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  --fwc-font-slogan:  'Nunito', var(--fwc-font-display);
 
   /* Gradientes tricolor */
   --fwc-gradient-tri:  linear-gradient(90deg, var(--fwc-can-mid) 0%, var(--fwc-usa-mid) 50%, var(--fwc-mex-mid) 100%);
@@ -85,7 +86,8 @@ body::before {
   justify-content: space-between;
   padding: 0.75rem 2rem;
   background-color: var(--fwc-black);
-  border-bottom: 4px solid var(--fwc-usa-mid);
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--fwc-can-mid), var(--fwc-usa-mid), var(--fwc-mex-mid)) 1;
 }
 
 .fwc-nav__logo {
@@ -147,6 +149,7 @@ body::before {
   gap: 3rem;
   width: max-content;
   animation: ticker-scroll 25s linear infinite;
+  will-change: transform;
 }
 
 .fwc-ticker__item {
@@ -188,9 +191,46 @@ body::before {
 /* ─── HEADER ──────────────────────────────────────────────────────────── */
 
 .fwc-header {
+  position: relative;
   margin-bottom: 2.5rem;
-  border-left: 6px solid var(--fwc-usa-mid);
   padding-left: 1.25rem;
+}
+
+.fwc-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(to bottom, var(--fwc-can-mid), var(--fwc-usa-mid), var(--fwc-mex-mid));
+}
+
+.fwc-header__eyebrow {
+  font-family: var(--fwc-font-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fwc-gray-600);
+  margin-bottom: 0.4rem;
+}
+
+.fwc-header__slogan {
+  font-family: var(--fwc-font-slogan);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--fwc-usa-light);
+  line-height: 1;
+  margin: 0.3rem 0 0.6rem;
+}
+
+.fwc-header__slogan sup {
+  font-size: 0.4em;
+  vertical-align: super;
+  opacity: 0.6;
 }
 
 .fwc-header h1 {

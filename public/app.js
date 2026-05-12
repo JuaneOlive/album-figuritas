@@ -1,6 +1,6 @@
 const STICKERS_API_URL = "http://localhost:3000/api/figuritas";
 
-const flagStyles = {
+const stickerColorStyles = {
   FWC: "#d4b96a",
   CC: "#FF2800",
   MEX: "#00532a",
@@ -53,6 +53,59 @@ const flagStyles = {
   AUS: "#001f4d"
 };
 
+const stickerCountryCodes = [
+  "FWC",
+  "CC",
+  "MEX",
+  "CAN",
+  "USA",
+  "HAI",
+  "CUW",
+  "PAN",
+  "BRA",
+  "PAR",
+  "ECU",
+  "ARG",
+  "URU",
+  "COL",
+  "CZE",
+  "BIH",
+  "SUI",
+  "SCO",
+  "TUR",
+  "GER",
+  "NED",
+  "SWE",
+  "BEL",
+  "ESP",
+  "FRA",
+  "NOR",
+  "AUT",
+  "POR",
+  "ENG",
+  "CRO",
+  "RSA",
+  "MAR",
+  "CIV",
+  "TUN",
+  "EGY",
+  "CPV",
+  "SEN",
+  "ALG",
+  "COD",
+  "GHA",
+  "KOR",
+  "QAT",
+  "JPN",
+  "IRN",
+  "KSA",
+  "IRQ",
+  "JOR",
+  "UZB",
+  "NZL",
+  "AUS"
+];
+
 function isLightColor(hex) {
   const c = hex.substring(1);
   const rgb = parseInt(c, 16);
@@ -89,9 +142,6 @@ async function getStickers(filter) {
     } else {
         url = STICKERS_API_URL;
     }
-
-
-
 
     const res = await fetch(url);
 
@@ -137,7 +187,7 @@ async function populateStickers() {
         option.textContent = sticker.nombre;
 
         let key = sticker.nombre.match(/^[A-Z]+/)[0] || "";
-        let style =flagStyles[key];
+        let style =stickerColorStyles[key];
         
         option.style.backgroundColor = style;
         option.style.color = isLightColor(style) ? "#000" : "#fff";

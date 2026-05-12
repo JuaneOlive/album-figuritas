@@ -11,20 +11,31 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+function buildStickerFilters(query) {
+  const obtenida = query.obtenida;
+  const codigo = query.codigo;
+  const stickerFilters = {};
+
+  if (obtenida !== undefined) {
+    stickerFilters.obtenida = obtenida === 'true';
+  }
+
+  if (codigo) {
+    stickerFilters.codigo = codigo.toUpperCase();
+  }
+  return stickerFilters;
+}
+
+function findStickers(query) {
+  return Sticker.findAll({
+    where: buildStickerFilters(query),
+    include: [{ model: StickerType, as: 'tipo' }]
+  });
+};
+
 app.get('/api/figuritas', async (req, res) => {
   try {
-    const { obtenida } = req.query;
-    const stickerFilters = {};
-
-    if (obtenida !== undefined) {
-      stickerFilters.obtenida = obtenida === 'true';
-    }
-
-    const stickers = await Sticker.findAll({
-      where: stickerFilters,
-      include: [{ model: StickerType, as: 'tipo' }]
-    });
-
+    const stickers = await findStickers(req.query);
     res.status(200).json(stickers);
   } catch (error) {
     console.error(error);

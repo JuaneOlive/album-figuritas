@@ -32,8 +32,15 @@ Sticker.init({
         validate: {
             min: 0
         }
-    }
-
+    },
+    codigo: {
+        type: DataTypes.STRING,
+        allowNull: false,   
+    },
+    grupo: {
+        type: DataTypes.STRING,
+        allowNull: true,   
+    },
 }, {
     sequelize: databaseConnection,
     modelName: 'Figurita',

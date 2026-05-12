@@ -12,6 +12,31 @@ const teamCodes = [
   'JPN', 'IRN', 'KSA', 'IRQ', 'JOR', 'UZB', 'NZL', 'AUS'
 ];
 
+const stickerGroups = {
+  A: ['MEX', 'RSA', 'KOR', 'CZE'],
+  B: ['CAN', 'BIH', 'QAT', 'SUI'],
+  C: ['BRA', 'MAR', 'HAI', 'SCO'],
+  D: ['USA', 'PAR', 'AUS', 'TUR'],
+  E: ['GER', 'CUW', 'CIV', 'ECU'],
+  F: ['NED', 'JPN', 'SWE', 'TUN'],
+  G: ['BEL', 'EGY', 'IRN', 'NZL'],
+  H: ['ESP', 'CPV', 'KSA', 'URU'],
+  I: ['FRA', 'SEN', 'IRQ', 'NOR'],
+  J: ['ARG', 'ALG', 'AUT', 'JOR'],
+  K: ['POR', 'COD', 'UZB', 'COL'],
+  L: ['ENG', 'CRO', 'GHA', 'PAN']
+};
+
+function getGroupForTeamCode(teamCode,groups) {
+  for (const [group, teams] of Object.entries(Groups)) {
+    if (teams.includes(teamCode)) {
+      return group;
+    }
+  }
+  return null;
+}
+
+
 function createTypeDictionary(stickerTypes) {
   return stickerTypes.reduce((typeDictionary, stickerType) => {
     typeDictionary[stickerType.nombre] = stickerType.id;
@@ -37,7 +62,8 @@ function generateStickers(typesByName) {
       numero: stickerNumber,
       nombre: `FWC${stickerNumber}`,
       tipoId: typesByName.fwc,
-      cantidad: 0
+      cantidad: 0,
+      codigo: "FWC"
     });
   }
 
@@ -52,12 +78,14 @@ function generateStickers(typesByName) {
       if (stickerNumber === 13) {
         stickerTypeId = typesByName.formación;
       }
-
+      const group = getGroupForTeamCode(teamCode, stickerGroups);
       stickers.push({
         numero: stickerNumber,
         nombre: `${teamCode}${stickerNumber}`,
         tipoId: stickerTypeId,
-        cantidad: 0
+        cantidad: 0,
+        codigo: teamCode,
+        grupo: group
       });
     }
   }
@@ -67,7 +95,8 @@ function generateStickers(typesByName) {
       numero: stickerNumber,
       nombre: `CC${stickerNumber}`,
       tipoId: typesByName['coca-cola'],
-      cantidad: 0
+      cantidad: 0,
+      codigo: "CC"
     });
   }
 
