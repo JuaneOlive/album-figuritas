@@ -4,6 +4,7 @@ export function renderStickersTable(stickers) {
     tableBody.innerHTML = "";
     stickers.forEach(sticker => {
         const actionCell = document.createElement("td");
+        actionCell.className = "fwc-table__actions";
         const addButton = document.createElement("button");
         const removeButton = document.createElement("button");
 
@@ -11,11 +12,13 @@ export function renderStickersTable(stickers) {
         addButton.textContent = "+";
         addButton.dataset.operation = "add";
         addButton.dataset.nombre = sticker.nombre;
+        addButton.className = "fwc-table-add-button";
 
         removeButton.type = "button";
         removeButton.textContent = "-";
         removeButton.dataset.nombre = sticker.nombre;
         removeButton.dataset.operation = "remove";
+        removeButton.className = "fwc-table-remove-button";
 
         actionCell.appendChild(addButton);
         actionCell.appendChild(removeButton);

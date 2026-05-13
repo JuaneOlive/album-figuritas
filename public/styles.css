@@ -425,8 +425,8 @@ tbody tr td:first-child {
   color: var(--fwc-white);
 }
 
-/* Columna cantidad — destacada */
-tbody tr td:last-child {
+/* Columna cantidad — col 3, destacada */
+tbody tr td:nth-child(3) {
   font-family: var(--fwc-font-display);
   font-size: 1.2rem;
   font-weight: 900;
@@ -436,10 +436,71 @@ tbody tr td:last-child {
 }
 
 /* Cantidad cero — atenuada */
-tbody tr td:last-child:has(+ *) { }
-tbody tr[data-obtenida="false"] td:last-child,
-tbody tr.missing td:last-child {
+tbody tr[data-obtenida="false"] td:nth-child(3),
+tbody tr.missing td:nth-child(3) {
   color: var(--fwc-gray-600);
+}
+
+/* ─── BOTONES + / - EN TABLA ──────────────────────────────────────────── */
+
+.fwc-table__actions {
+  padding: 0.35rem 0.75rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.fwc-table-add-button,
+.fwc-table-remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-family: var(--fwc-font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    transform         120ms ease,
+    box-shadow        120ms ease,
+    background-color  120ms ease,
+    color             120ms ease,
+    border-color      120ms ease;
+}
+
+.fwc-table-add-button {
+  background-color: var(--fwc-mex-mid);
+  color: var(--fwc-white);
+  border: 2px solid var(--fwc-mex-mid);
+  margin-right: 0.3rem;
+}
+
+.fwc-table-add-button:hover {
+  background-color: var(--fwc-mex-deep);
+  border-color: var(--fwc-mex-deep);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--fwc-mex-deep);
+}
+
+.fwc-table-remove-button {
+  background-color: transparent;
+  color: var(--fwc-can-mid);
+  border: 2px solid var(--fwc-can-mid);
+}
+
+.fwc-table-remove-button:hover {
+  background-color: var(--fwc-can-mid);
+  color: var(--fwc-white);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--fwc-can-deep);
+}
+
+.fwc-table-add-button:active,
+.fwc-table-remove-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
 }
 
 /* Estado vacío de la tabla */
