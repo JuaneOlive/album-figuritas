@@ -58,6 +58,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-align: left;
   width: 100%;
+  overflow-x: hidden; /* evita scroll horizontal por desborde de sombras/dropdowns */
 }
 
 /* ─── PATRÓN DE FONDO (squares + circles — 48 unidades FIFA) ──────────── */
@@ -73,6 +74,21 @@ body::before {
   background-size: 48px 48px, 48px 48px, 48px 48px;
   pointer-events: none;
   z-index: 0;
+}
+
+/* ─── ESTAMPAS DE SEDES — fondo decorativo (16 ciudades sede) ─────────── */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-repeat: repeat;
+  background-size: 480px 480px;
+  /* rect(campo) + circle(pelota) por ciudad — ambas shapes del design system FIFA */
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='480'><g fill='none' stroke-width='2'><g transform='translate(10,18)'><rect width='16' height='16' stroke='%23009688'/><circle cx='8' cy='8' r='4.5' stroke='%23009688' stroke-width='1.5'/></g><g transform='translate(135,35)'><rect width='16' height='16' stroke='%23E8930A'/><circle cx='8' cy='8' r='4.5' stroke='%23E8930A' stroke-width='1.5'/></g><g transform='translate(255,12)'><rect width='16' height='16' stroke='%23C5E000'/><circle cx='8' cy='8' r='4.5' stroke='%23C5E000' stroke-width='1.5'/></g><g transform='translate(378,28)'><rect width='16' height='16' stroke='%2300C4B4'/><circle cx='8' cy='8' r='4.5' stroke='%2300C4B4' stroke-width='1.5'/></g><g transform='translate(22,143)'><rect width='16' height='16' stroke='%233A5BC7'/><circle cx='8' cy='8' r='4.5' stroke='%233A5BC7' stroke-width='1.5'/></g><g transform='translate(143,128)'><rect width='16' height='16' stroke='%23E61D25'/><circle cx='8' cy='8' r='4.5' stroke='%23E61D25' stroke-width='1.5'/></g><g transform='translate(262,150)'><rect width='16' height='16' stroke='%23F4533E'/><circle cx='8' cy='8' r='4.5' stroke='%23F4533E' stroke-width='1.5'/></g><g transform='translate(382,138)'><rect width='16' height='16' stroke='%23FF6D00'/><circle cx='8' cy='8' r='4.5' stroke='%23FF6D00' stroke-width='1.5'/></g><g transform='translate(12,263)'><rect width='16' height='16' stroke='%23E91E8C'/><circle cx='8' cy='8' r='4.5' stroke='%23E91E8C' stroke-width='1.5'/></g><g transform='translate(142,248)'><rect width='16' height='16' stroke='%2300C8B4'/><circle cx='8' cy='8' r='4.5' stroke='%2300C8B4' stroke-width='1.5'/></g><g transform='translate(248,268)'><rect width='16' height='16' stroke='%234F7AC8'/><circle cx='8' cy='8' r='4.5' stroke='%234F7AC8' stroke-width='1.5'/></g><g transform='translate(372,252)'><rect width='16' height='16' stroke='%231E72D4'/><circle cx='8' cy='8' r='4.5' stroke='%231E72D4' stroke-width='1.5'/></g><g transform='translate(28,382)'><rect width='16' height='16' stroke='%23CC0000'/><circle cx='8' cy='8' r='4.5' stroke='%23CC0000' stroke-width='1.5'/></g><g transform='translate(148,372)'><rect width='16' height='16' stroke='%23B8A000'/><circle cx='8' cy='8' r='4.5' stroke='%23B8A000' stroke-width='1.5'/></g><g transform='translate(262,388)'><rect width='16' height='16' stroke='%230066CC'/><circle cx='8' cy='8' r='4.5' stroke='%230066CC' stroke-width='1.5'/></g><g transform='translate(380,378)'><rect width='16' height='16' stroke='%234A9A5A'/><circle cx='8' cy='8' r='4.5' stroke='%234A9A5A' stroke-width='1.5'/></g></g></svg>");
 }
 
 /* ─── NAVEGACIÓN ──────────────────────────────────────────────────────── */
@@ -146,7 +162,7 @@ body::before {
 
 .fwc-ticker__track {
   display: flex;
-  gap: 3rem;
+  gap: 0;              /* el espacio lo carga cada item con margin-right */
   width: max-content;
   animation: ticker-scroll 25s linear infinite;
   will-change: transform;
@@ -156,6 +172,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
+  margin-right: 3rem;  /* trailing space propio → total = 2× mitad exacto */
   white-space: nowrap;
   font-family: var(--fwc-font-body);
   font-size: 0.7rem;
@@ -185,7 +202,7 @@ body::before {
   z-index: 1;
   max-width: 960px;
   margin-inline: auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 2.5rem 1.5rem 14rem;
 }
 
 /* ─── HEADER ──────────────────────────────────────────────────────────── */
@@ -461,9 +478,15 @@ tbody tr.missing td:last-child {
   gap: 0.75rem;
 }
 
-/* Select */
-#addStickerSelect {
+/* ─── AUTOCOMPLETE DE FIGURITAS ──────────────────────────────────────────── */
+
+.fwc-autocomplete {
+  position: relative;
   flex: 1 1 220px;
+}
+
+#addStickerSelect {
+  width: 100%;
   padding: 0.6rem 1rem;
   font-family: var(--fwc-font-body);
   font-size: 0.875rem;
@@ -472,13 +495,8 @@ tbody tr.missing td:last-child {
   color: var(--fwc-white);
   border: 3px solid var(--fwc-gray-800);
   border-radius: 0;
-  cursor: pointer;
+  cursor: text;
   transition: border-color 120ms ease, box-shadow 120ms ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234F6EC8' stroke-width='2' fill='none' stroke-linecap='square'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  padding-right: 2.5rem;
 }
 
 #addStickerSelect:focus {
@@ -487,9 +505,96 @@ tbody tr.missing td:last-child {
   box-shadow: 4px 4px 0 var(--fwc-usa-mid);
 }
 
-#addStickerSelect option {
-  background-color: var(--fwc-gray-800);
-  color: var(--fwc-white);
+.fwc-autocomplete__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;   /* scroll interno no propaga a la página */
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  background: var(--fwc-black);
+  border: 3px solid var(--fwc-usa-mid);
+  border-top: none;
+  box-shadow: 0 4px 0 var(--fwc-usa-deep); /* solo hacia abajo — no desborda el ancho */
+
+  /* Animación suave: opacity + deslizamiento */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.fwc-autocomplete__list.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.fwc-autocomplete__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  height: 44px;
+  cursor: pointer;
+  background-color: var(--item-bg, var(--fwc-gray-800));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: filter 80ms ease;
+}
+
+.fwc-autocomplete__item:last-child  { border-bottom: none; }
+.fwc-autocomplete__item:hover       { filter: brightness(0.80); }
+
+.fwc-autocomplete__code {
+  font-family: var(--fwc-font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.fwc-autocomplete__type {
+  font-family: var(--fwc-font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  opacity: 0.82;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.fwc-autocomplete__list::-webkit-scrollbar       { width: 4px; }
+.fwc-autocomplete__list::-webkit-scrollbar-track  { background: var(--fwc-gray-800); }
+.fwc-autocomplete__list::-webkit-scrollbar-thumb  { background: var(--fwc-usa-mid); }
+
+/* Item con foco de teclado (↑↓) */
+.fwc-autocomplete__item.is-focused {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: -2px;
+  filter: brightness(0.82);
+}
+
+/* Mensaje de sin resultados */
+.fwc-autocomplete__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-family: var(--fwc-font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fwc-gray-600);
+  background-color: var(--fwc-black);
 }
 
 /* Agregar — verde México */
@@ -516,15 +621,66 @@ tbody tr.missing td:last-child {
   box-shadow: 4px 4px 0 var(--fwc-can-deep);
 }
 
+/* ─── BOTONERA DE PAÍSES ──────────────────────────────────────────────── */
+
+/* Override de .fwc-divider (height:4px / gradient) por especificidad de ID */
+#buttonsCodecontainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  height: auto;
+  background: none;
+  border: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+}
+
+.fwc-select-country-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.3rem 0.65rem;
+  font-family: var(--fwc-font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  background-color: var(--btn-bg, var(--fwc-gray-800));
+  border: 2px solid var(--btn-bg, var(--fwc-gray-800));
+  border-radius: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform  120ms ease,
+    box-shadow 120ms ease,
+    filter     120ms ease;
+}
+
+.fwc-select-country-button:hover {
+  filter: brightness(0.75);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.fwc-select-country-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+  filter: brightness(0.6);
+}
+
 /* ─── RESPONSIVE ──────────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
   .fwc-nav { padding: 0.75rem 1rem; }
   .fwc-nav__flags { display: none; }
-  .fwc-main { padding: 1.5rem 1rem 3rem; }
+  .fwc-main { padding: 1.5rem 1rem 10rem; }
   .fwc-filter-bar { gap: 0.5rem; }
   .fwc-form__row { flex-direction: column; }
   #addStickerSelect { flex: 1 1 100%; }
+  #buttonsCodecontainer { gap: 0.35rem; margin-bottom: 1.25rem; }
+  .fwc-select-country-button { font-size: 0.65rem; padding: 0.25rem 0.5rem; min-width: 2.7rem; }
 }
 
 /* ─── ACCESIBILIDAD ───────────────────────────────────────────────────── */

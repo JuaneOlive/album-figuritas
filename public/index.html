@@ -72,16 +72,17 @@
     <!-- Tabla -->
     <div class="fwc-table-wrap">
       <table aria-label="Tabla de figuritas">
-        <thead>
+        <thead id="tableHeader">
           <tr>
             <th>Código</th>
             <th>Tipo</th>
             <th>Cant.</th>
+            <th>Acciones.</th>
           </tr>
         </thead>
         <tbody id="stickersTableBody">
           <tr>
-            <td colspan="3" class="fwc-table-empty">Cargá las figuritas para empezar</td>
+            <td colspan="4" class="fwc-table-empty">Cargá las figuritas para empezar</td>
           </tr>
         </tbody>
       </table>
@@ -94,9 +95,13 @@
       <p class="fwc-form__title" id="form-title">Actualizar figurita</p>
       <form id="addStickerForm">
         <div class="fwc-form__row">
-          <select id="addStickerSelect" name="addStickerSelect" aria-label="Seleccionar figurita">
-            <option value="">Seleccione una figurita</option>
-          </select>
+          <div class="fwc-autocomplete">
+            <input id="addStickerSelect" name="addStickerSelect" type="text"
+                   aria-label="Seleccionar figurita" aria-autocomplete="list"
+                   aria-controls="stickersDropdown"
+                   placeholder="Buscar figurita..." autocomplete="off" />
+            <ul class="fwc-autocomplete__list" id="stickersDropdown" role="listbox"></ul>
+          </div>
           <button id="addStickerButton"    type="button">+ Agregar</button>
           <button id="removeStickerButton" type="button">– Quitar</button>
         </div>
@@ -105,6 +110,6 @@
 
   </main>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

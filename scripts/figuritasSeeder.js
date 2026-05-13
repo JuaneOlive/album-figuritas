@@ -4,12 +4,18 @@ import StickerType from '../models/TipoFigurita.js';
 import { pathToFileURL } from 'url';
 
 const teamCodes = [
-  'MEX', 'CAN', 'USA', 'HAI', 'CUW', 'PAN', 'BRA', 'PAR',
-  'ECU', 'ARG', 'URU', 'COL', 'CZE', 'BIH', 'SUI', 'SCO',
-  'TUR', 'GER', 'NED', 'SWE', 'BEL', 'ESP', 'FRA', 'NOR',
-  'AUT', 'POR', 'ENG', 'CRO', 'RSA', 'MAR', 'CIV', 'TUN',
-  'EGY', 'CPV', 'SEN', 'ALG', 'COD', 'GHA', 'KOR', 'QAT',
-  'JPN', 'IRN', 'KSA', 'IRQ', 'JOR', 'UZB', 'NZL', 'AUS'
+  'MEX', 'RSA', 'KOR', 'CZE',
+  'CAN', 'BIH', 'QAT', 'SUI',
+  'BRA', 'MAR', 'HAI', 'SCO',
+  'USA', 'PAR', 'AUS', 'TUR',
+  'GER', 'CUW', 'CIV', 'ECU',
+  'NED', 'JPN', 'SWE', 'TUN',
+  'BEL', 'EGY', 'IRN', 'NZL',
+  'ESP', 'CPV', 'KSA', 'URU',
+  'FRA', 'SEN', 'IRQ', 'NOR',
+  'ARG', 'ALG', 'AUT', 'JOR',
+  'POR', 'COD', 'UZB', 'COL',
+  'ENG', 'CRO', 'GHA', 'PAN'
 ];
 
 const stickerGroups = {
@@ -27,8 +33,8 @@ const stickerGroups = {
   L: ['ENG', 'CRO', 'GHA', 'PAN']
 };
 
-function getGroupForTeamCode(teamCode,groups) {
-  for (const [group, teams] of Object.entries(Groups)) {
+function getGroupForTeamCode(teamCode, groups) {
+  for (const [group, teams] of Object.entries(groups)) {
     if (teams.includes(teamCode)) {
       return group;
     }
@@ -68,6 +74,8 @@ function generateStickers(typesByName) {
   }
 
   for (const teamCode of teamCodes) {
+    const group = getGroupForTeamCode(teamCode, stickerGroups);
+
     for (let stickerNumber = 1; stickerNumber <= 20; stickerNumber++) {
       let stickerTypeId = typesByName.jugador;
 
@@ -78,7 +86,6 @@ function generateStickers(typesByName) {
       if (stickerNumber === 13) {
         stickerTypeId = typesByName.formación;
       }
-      const group = getGroupForTeamCode(teamCode, stickerGroups);
       stickers.push({
         numero: stickerNumber,
         nombre: `${teamCode}${stickerNumber}`,

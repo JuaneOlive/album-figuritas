@@ -57,6 +57,56 @@ async function findStickers(query) {
   return stickers;
 }
 
+function validatePatchStickerParams(stickerName, operation) {
+  if (!stickerName) {
+    throw createBadRequestError('Parametro invalido');
+  }
+
+  if (operation !== 'add' && operation !== 'remove') {
+    throw createBadRequestError('Operacion no valida');
+  }
+}
+
+async function findStickerByName(stickerName) {
+  return Sticker.findOne({
+    where: { nombre: stickerName },
+    include: [{ model: StickerType, as: 'tipo' }]
+  });
+}
+
+function applyStickerOperation(sticker, operation) {
+  if (operation === 'add') {
+    sticker.cantidad += 1;
+    sticker.obtenida = true;
+    return;
+  }
+
+  if (sticker.cantidad <= 0) {
+    throw createBadRequestError('No se pueden tener cantidades negativas');
+  }
+
+  sticker.cantidad -= 1;
+  sticker.obtenida = sticker.cantidad > 0;
+}
+
+async function updateSticker(stickerName, operation) {
+  validatePatchStickerParams(stickerName, operation);
+
+  const sticker = await findStickerByName(stickerName);
+
+  if (!sticker) {
+    const error = new Error('Figurita no encontrada');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  applyStickerOperation(sticker, operation);
+
+  await sticker.save();
+
+  return sticker;
+}
+
 app.get('/api/figuritas', async (req, res) => {
   try {
     const stickers = await findStickers(req.query);
@@ -71,39 +121,12 @@ app.patch('/api/figuritas/:nombre', async (req, res) => {
   try {
     const stickerName = req.params.nombre.toUpperCase();
     const operation = req.query.operation;
-    if (!stickerName) {
-      return res.status(400).json({ error: 'Parametro invalido' });
-    }
-
-    const sticker = await Sticker.findOne({
-      where: { nombre: stickerName },
-      include: [{ model: StickerType, as: 'tipo' }]
-    });
-
-    if (!sticker) {
-      return res.status(404).json({ error: 'Figurita no encontrada' });
-    }
-
-    if (operation === "add") {
-      sticker.cantidad += 1;
-      sticker.obtenida = true;
-    }
-    else if (operation === "remove") {
-      if (sticker.cantidad <= 0) {
-        return res.status(400).json({ error: 'No se pueden tener cantidades negativas' });
-      }
-      sticker.cantidad -= 1;
-      sticker.obtenida = sticker.cantidad > 0;
-    } else {
-      return res.status(400).json({ error: 'Operacion no valida' });
-    }
-    
-    await sticker.save();
+    const sticker = await updateSticker(stickerName, operation);
 
     res.status(200).json(sticker);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al actualizar la figurita' });
+    res.status(error.statusCode || 500).json({ error: error.message || 'Error al actualizar la figurita' });
   }
 });
 
