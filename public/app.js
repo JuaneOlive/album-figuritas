@@ -116,6 +116,20 @@ function isLightColor(hex) {
   return luminance > 180;
 }
 
+function populateCountryCodeButtons() {
+    const container = document.getElementById("buttonsCodecontainer");
+
+    stickerCountryCodes.forEach(CountryCode => {
+        const button = document.createElement("button");
+        button.textContent = CountryCode;
+        button.id = `filter-${CountryCode}`;
+        button.className = `fwc-select-country-button`;
+        button.dataset.countryCode = CountryCode;
+        container.appendChild(button);
+
+    });
+}
+
 function renderStickersTable(stickers) {
     const tableBody = document.getElementById("stickersTableBody");
     tableBody.innerHTML = "";
@@ -134,14 +148,20 @@ function clearStickersTable() {
     tableBody.innerHTML = "";
 }
 
-async function getStickers(filter) {
-    let url;
-
+function buildStickersQueryString(filter) {
     if (filter === "pegadas" || filter === "faltantes") {
-        url = STICKERS_API_URL + `?obtenida=${filter === "pegadas"}`;
-    } else {
-        url = STICKERS_API_URL;
+        return `?obtenida=${filter === "pegadas"}`;
     }
+
+    return "";
+}
+
+function buildStickersUrl(filter) {
+    return STICKERS_API_URL + buildStickersQueryString(filter);
+}
+
+async function getStickers(filter) {
+    const url = buildStickersUrl(filter);
 
     const res = await fetch(url);
 
@@ -199,8 +219,6 @@ async function populateStickers() {
 
 }
 
-
-
 async function patchSticker(operation) {
 
     const stickerName = document.getElementById("addStickerSelect").value;
@@ -224,6 +242,8 @@ async function patchSticker(operation) {
 }
 
 populateStickers();
+
+populateCountryCodeButtons();
 
 document.getElementById("loadStickersButton").addEventListener("click", () => loadStickers());
 

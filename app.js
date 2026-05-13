@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import Sticker from './models/Figurita.js';
 import StickerType from './models/TipoFigurita.js';
-import { Op } from 'sequelize';
 
 const app = express();
 const serverPort = process.env.PORT || 3000;
@@ -11,7 +10,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+function createBadRequestError(message) {
+  const error = new Error(message);
+  error.statusCode = 400;
+  return error;
+}
+
+function validateStickerQuery(query) {
+  const obtenida = query.obtenida;
+  const codigo = query.codigo;
+
+  if (obtenida !== undefined && obtenida !== 'true' && obtenida !== 'false') {
+    throw createBadRequestError('El filtro obtenida debe ser true o false');
+  }
+
+  if (codigo !== undefined && codigo.trim() === '') {
+    throw createBadRequestError('El filtro codigo no puede estar vacio');
+  }
+}
+
 function buildStickerFilters(query) {
+  validateStickerQuery(query);
+
   const obtenida = query.obtenida;
   const codigo = query.codigo;
   const stickerFilters = {};
@@ -26,12 +46,16 @@ function buildStickerFilters(query) {
   return stickerFilters;
 }
 
-function findStickers(query) {
-  return Sticker.findAll({
-    where: buildStickerFilters(query),
+async function findStickers(query) {
+  const stickerFilters = buildStickerFilters(query);
+
+  const stickers = await Sticker.findAll({
+    where: stickerFilters,
     include: [{ model: StickerType, as: 'tipo' }]
   });
-};
+
+  return stickers;
+}
 
 app.get('/api/figuritas', async (req, res) => {
   try {
@@ -39,7 +63,7 @@ app.get('/api/figuritas', async (req, res) => {
     res.status(200).json(stickers);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al obtener las figuritas' });
+    res.status(error.statusCode || 500).json({ error: error.message || 'Error al obtener las figuritas' });
   }
 });
 
