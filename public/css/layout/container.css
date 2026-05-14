@@ -1,0 +1,11 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   CONTAINER — Contenedor principal .fwc-main
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-main {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem 14rem;
+}

@@ -1,0 +1,25 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   RESET MÍNIMO — HTML, body, box-sizing
+   ═══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fwc-font-body);
+  background-color: var(--fwc-black);
+  color: var(--fwc-white);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-align: left;
+  width: 100%;
+  overflow-x: hidden;
+}

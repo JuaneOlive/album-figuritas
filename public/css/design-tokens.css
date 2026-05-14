@@ -1,0 +1,64 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Variables, colores, tipografía, espaciado
+   FIFA World Cup 2026™ — IP Guidelines v2.0
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Colores base */
+  --fwc-black:     #0A0A0A;
+  --fwc-white:     #FFFFFF;
+  --fwc-off-white: #F5F4F0;
+
+  /* USA — Blues (PMS 7687 C oficial) */
+  --fwc-usa-deep:  #1B2F7B;
+  --fwc-usa-mid:   #2A398D;
+  --fwc-usa-light: #4F6EC8;
+
+  /* Canada — Reds (PMS 485 C oficial) */
+  --fwc-can-deep:  #A8001A;
+  --fwc-can-mid:   #E61D25;
+  --fwc-can-light: #FF5A5A;
+
+  /* México — Greens (PMS 7738 C oficial) */
+  --fwc-mex-deep:  #1A6B1A;
+  --fwc-mex-mid:   #3CAC3B;
+  --fwc-mex-light: #62C961;
+
+  /* Neutros (PMS 427 C y PMS 2336 C) */
+  --fwc-gray-100:  #F5F5F5;
+  --fwc-gray-200:  #D1D4D1;
+  --fwc-gray-400:  #9A9D9A;
+  --fwc-gray-600:  #6B6E6B;
+  --fwc-gray-800:  #474A4A;
+
+  /* Tipografía */
+  --fwc-font-display: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+  --fwc-font-body:    'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  --fwc-font-slogan:  'Nunito', var(--fwc-font-display);
+
+  /* Gradientes tricolor */
+  --fwc-gradient-tri:  linear-gradient(90deg, var(--fwc-can-mid) 0%, var(--fwc-usa-mid) 50%, var(--fwc-mex-mid) 100%);
+  --fwc-gradient-dark: linear-gradient(180deg, #1a1a1a 0%, var(--fwc-black) 100%);
+
+  /* Sombras (offset duro, sin blur) */
+  --fwc-shadow-sm:  2px  2px  0 rgba(0,0,0,0.12);
+  --fwc-shadow-md:  4px  4px  0 rgba(0,0,0,0.16);
+  --fwc-shadow-lg:  8px  8px  0 rgba(0,0,0,0.20);
+  --fwc-shadow-xl: 12px 12px  0 rgba(0,0,0,0.25);
+
+  /* Espaciado (unidad base 4px, FIFA = 48px) */
+  --fwc-space-1:   4px;
+  --fwc-space-2:   8px;
+  --fwc-space-3:  12px;
+  --fwc-space-4:  16px;
+  --fwc-space-6:  24px;
+  --fwc-space-8:  32px;
+  --fwc-space-12: 48px;
+  --fwc-space-24: 96px;
+
+  /* Animaciones */
+  --fwc-ease-fast:   120ms ease;
+  --fwc-ease-base:   240ms ease;
+  --fwc-ease-slow:   400ms ease;
+  --fwc-ease-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}

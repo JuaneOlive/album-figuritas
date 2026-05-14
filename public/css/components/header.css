@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   HEADER — Sección de bienvenida
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-header {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding-left: 1.25rem;
+}
+
+.fwc-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(to bottom, var(--fwc-can-mid), var(--fwc-usa-mid), var(--fwc-mex-mid));
+}
+
+.fwc-header__eyebrow {
+  font-family: var(--fwc-font-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fwc-gray-600);
+  margin-bottom: 0.4rem;
+}
+
+.fwc-header__slogan {
+  font-family: var(--fwc-font-slogan);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--fwc-usa-light);
+  line-height: 1;
+  margin: 0.3rem 0 0.6rem;
+}
+
+.fwc-header__slogan sup {
+  font-size: 0.4em;
+  vertical-align: super;
+  opacity: 0.6;
+}
+
+.fwc-header h1 {
+  font-family: var(--fwc-font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--fwc-white);
+  margin-bottom: 0.4rem;
+}
+
+.fwc-header h1 .accent {
+  color: var(--fwc-usa-light);
+}
+
+.fwc-header h2 {
+  font-family: var(--fwc-font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fwc-gray-400);
+  text-transform: none;
+  margin-bottom: 0;
+}

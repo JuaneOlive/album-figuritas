@@ -1,0 +1,80 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   NAV — Navegación, logo, flags
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  background-color: var(--fwc-black);
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(90deg, var(--fwc-can-mid), var(--fwc-usa-mid), var(--fwc-mex-mid)) 1;
+}
+
+.fwc-nav__logo {
+  font-family: var(--fwc-font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--fwc-white);
+  line-height: 1;
+}
+
+.fwc-nav__logo span {
+  color: var(--fwc-usa-light);
+}
+
+.fwc-nav__flags {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.fwc-nav__flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--fwc-font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid currentColor;
+}
+
+.fwc-nav__flag--usa {
+  color: var(--fwc-usa-light);
+}
+
+.fwc-nav__flag--can {
+  color: var(--fwc-can-light);
+}
+
+.fwc-nav__flag--mex {
+  color: var(--fwc-mex-light);
+}
+
+.fwc-nav__flag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.fwc-nav__flag--usa .fwc-nav__flag-dot {
+  background: var(--fwc-usa-mid);
+}
+
+.fwc-nav__flag--can .fwc-nav__flag-dot {
+  background: var(--fwc-can-mid);
+}
+
+.fwc-nav__flag--mex .fwc-nav__flag-dot {
+  background: var(--fwc-mex-mid);
+}

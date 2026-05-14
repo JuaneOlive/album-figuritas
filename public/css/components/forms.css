@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   FORMS — Inputs, autocomplete, form container
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-form {
+  border: 3px solid var(--fwc-gray-800);
+  padding: 1.5rem;
+  background-color: rgba(255,255,255,0.02);
+}
+
+.fwc-form__title {
+  font-family: var(--fwc-font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fwc-gray-400);
+  margin-bottom: 1rem;
+}
+
+.fwc-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+/* Autocomplete container */
+.fwc-autocomplete {
+  position: relative;
+  flex: 1 1 220px;
+}
+
+#addStickerSelect {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-family: var(--fwc-font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: var(--fwc-black);
+  color: var(--fwc-white);
+  border: 3px solid var(--fwc-gray-800);
+  border-radius: 0;
+  cursor: text;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+#addStickerSelect:focus {
+  outline: none;
+  border-color: var(--fwc-usa-mid);
+  box-shadow: 4px 4px 0 var(--fwc-usa-mid);
+}
+
+/* Dropdown list */
+.fwc-autocomplete__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  background: var(--fwc-black);
+  border: 3px solid var(--fwc-usa-mid);
+  border-top: none;
+  box-shadow: 0 4px 0 var(--fwc-usa-deep);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.fwc-autocomplete__list.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Dropdown item */
+.fwc-autocomplete__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  height: 44px;
+  cursor: pointer;
+  background-color: var(--item-bg, var(--fwc-gray-800));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: filter 80ms ease;
+}
+
+.fwc-autocomplete__item:last-child {
+  border-bottom: none;
+}
+
+.fwc-autocomplete__item:hover {
+  filter: brightness(0.80);
+}
+
+.fwc-autocomplete__code {
+  font-family: var(--fwc-font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.fwc-autocomplete__type {
+  font-family: var(--fwc-font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  opacity: 0.82;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.fwc-autocomplete__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fwc-autocomplete__list::-webkit-scrollbar-track {
+  background: var(--fwc-gray-800);
+}
+
+.fwc-autocomplete__list::-webkit-scrollbar-thumb {
+  background: var(--fwc-usa-mid);
+}
+
+.fwc-autocomplete__item.is-focused {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: -2px;
+  filter: brightness(0.82);
+}
+
+.fwc-autocomplete__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-family: var(--fwc-font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fwc-gray-600);
+  background-color: var(--fwc-black);
+}
+
+/* Form buttons */
+#addStickerButton {
+  background-color: var(--fwc-mex-mid);
+  color: var(--fwc-white);
+  border-color: var(--fwc-mex-mid);
+}
+
+#addStickerButton:hover {
+  background-color: var(--fwc-mex-deep);
+  border-color: var(--fwc-mex-deep);
+  box-shadow: 4px 4px 0 var(--fwc-mex-deep);
+}
+
+#removeStickerButton {
+  background-color: transparent;
+  color: var(--fwc-can-mid);
+  border-color: var(--fwc-can-mid);
+}
+
+#removeStickerButton:hover {
+  background-color: var(--fwc-can-mid);
+  color: var(--fwc-white);
+  box-shadow: 4px 4px 0 var(--fwc-can-deep);
+}

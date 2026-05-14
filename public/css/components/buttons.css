@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   BUTTONS — Botones base: filtros y form buttons
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.fwc-filter-bar button,
+.fwc-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--fwc-font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 0;
+  border: 3px solid currentColor;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  white-space: nowrap;
+}
+
+.fwc-filter-bar button:hover,
+.fwc-form button:hover {
+  transform: translate(-3px, -3px);
+}
+
+.fwc-filter-bar button:active,
+.fwc-form button:active {
+  transform: translate(0, 0);
+  box-shadow: none !important;
+}
+
+/* Cargar todas — azul USA */
+#loadStickersButton {
+  background-color: var(--fwc-usa-mid);
+  color: var(--fwc-white);
+  border-color: var(--fwc-usa-mid);
+}
+
+#loadStickersButton:hover {
+  background-color: var(--fwc-usa-deep);
+  border-color: var(--fwc-usa-deep);
+  box-shadow: 4px 4px 0 var(--fwc-usa-deep);
+}
+
+/* Obtenidas — verde México */
+#loadOwnedStickersButton {
+  background-color: transparent;
+  color: var(--fwc-mex-mid);
+  border-color: var(--fwc-mex-mid);
+}
+
+#loadOwnedStickersButton:hover {
+  background-color: var(--fwc-mex-mid);
+  color: var(--fwc-white);
+  box-shadow: 4px 4px 0 var(--fwc-mex-deep);
+}
+
+/* Faltantes — rojo Canadá */
+#loadMissingStickersButton {
+  background-color: transparent;
+  color: var(--fwc-can-mid);
+  border-color: var(--fwc-can-mid);
+}
+
+#loadMissingStickersButton:hover {
+  background-color: var(--fwc-can-mid);
+  color: var(--fwc-white);
+  box-shadow: 4px 4px 0 var(--fwc-can-deep);
+}
+
+/* Limpiar — gris outline */
+#clearStickersButton {
+  background-color: transparent;
+  color: var(--fwc-gray-400);
+  border-color: var(--fwc-gray-800);
+}
+
+#clearStickersButton:hover {
+  color: var(--fwc-white);
+  border-color: var(--fwc-gray-400);
+  box-shadow: 4px 4px 0 var(--fwc-gray-800);
+}

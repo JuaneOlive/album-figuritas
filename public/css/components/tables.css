@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   TABLES — Tabla de figuritas y botones de tabla
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-table-wrap {
+  border: 3px solid var(--fwc-gray-800);
+  margin-bottom: 2.5rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--fwc-font-body);
+  font-size: 0.875rem;
+}
+
+thead {
+  background-color: var(--fwc-usa-mid);
+}
+
+thead tr th {
+  padding: 0.75rem 1rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fwc-white);
+  text-align: left;
+  border-bottom: 3px solid var(--fwc-usa-deep);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--fwc-gray-800);
+  transition: background-color 120ms ease;
+}
+
+tbody tr:hover {
+  background-color: rgba(79, 110, 200, 0.12);
+}
+
+tbody tr td {
+  padding: 0.65rem 1rem;
+  color: var(--fwc-gray-200);
+  vertical-align: middle;
+}
+
+tbody tr td:first-child {
+  font-family: var(--fwc-font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fwc-white);
+}
+
+tbody tr td:nth-child(3) {
+  font-family: var(--fwc-font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--fwc-usa-light);
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+tbody tr[data-obtenida="false"] td:nth-child(3),
+tbody tr.missing td:nth-child(3) {
+  color: var(--fwc-gray-600);
+}
+
+/* Tabla vacía */
+.fwc-table-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-family: var(--fwc-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--fwc-gray-600);
+  letter-spacing: 0.04em;
+}
+
+/* Botones de tabla */
+.fwc-table__actions {
+  padding: 0.35rem 0.75rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.fwc-table-add-button,
+.fwc-table-remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-family: var(--fwc-font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    transform         120ms ease,
+    box-shadow        120ms ease,
+    background-color  120ms ease,
+    color             120ms ease,
+    border-color      120ms ease;
+}
+
+.fwc-table-add-button {
+  background-color: var(--fwc-mex-mid);
+  color: var(--fwc-white);
+  border: 2px solid var(--fwc-mex-mid);
+  margin-right: 0.3rem;
+}
+
+.fwc-table-add-button:hover {
+  background-color: var(--fwc-mex-deep);
+  border-color: var(--fwc-mex-deep);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--fwc-mex-deep);
+}
+
+.fwc-table-remove-button {
+  background-color: transparent;
+  color: var(--fwc-can-mid);
+  border: 2px solid var(--fwc-can-mid);
+}
+
+.fwc-table-remove-button:hover {
+  background-color: var(--fwc-can-mid);
+  color: var(--fwc-white);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 var(--fwc-can-deep);
+}
+
+.fwc-table-add-button:active,
+.fwc-table-remove-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
