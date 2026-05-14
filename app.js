@@ -11,6 +11,12 @@ app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
 }));
 app.use(express.json());
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === '/index.html') {
+    res.set('Cache-Control', 'public, max-age=3600');
+  }
+  next();
+});
 app.use(express.static('public'));
 
 function createBadRequestError(message) {
@@ -111,6 +117,7 @@ async function updateSticker(stickerName, operation) {
 }
 
 app.get('/health', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=60');
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
