@@ -1,8 +1,20 @@
-import {Sequelize} from 'sequelize';
+import 'dotenv/config';
+import { Sequelize } from 'sequelize';
+
 const databaseConnection = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'data/datos-album.sqlite',
-    logging: false
+    dialect: 'postgres',
+    host:     process.env.DB_HOST     || 'localhost',
+    port:     Number(process.env.DB_PORT) || 5432,
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    logging:  process.env.NODE_ENV === 'development' ? console.log : false,
+    pool: {
+        max:     5,
+        min:     0,
+        acquire: 30000,
+        idle:    10000
+    }
 });
 
 export default databaseConnection;
