@@ -119,7 +119,7 @@ Leyenda: `[x]` = hecho · `[ ]` = pendiente · `[~]` = aceptado temporalmente
 Sección          Progreso
 ────────────────────────────────
 Código           ████████████████ 100%  (14/14 ítems ✓ o ~)
-Entorno local    ████░░░░░░░░░░░░  38%  (3/8 ítems ✓)
+Entorno local    ████████████░░░░  60%  (3/5 ítems ✓)
 VPS Sistema      ░░░░░░░░░░░░░░░░   0%  (0/7 pendientes)
 Base de datos    ░░░░░░░░░░░░░░░░   0%  (0/8 pendientes)
 App              ░░░░░░░░░░░░░░░░   0%  (0/11 pendientes)
