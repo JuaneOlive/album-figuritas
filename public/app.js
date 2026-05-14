@@ -43,8 +43,9 @@ async function getStickers(filters) {
     }
 
     const data = await res.json();
+    const stickers = data.stickers || data;
 
-    return data.map(item => ({
+    return stickers.map(item => ({
         nombre: item.nombre,
         tipo: item.tipo,
         cantidad: item.cantidad
