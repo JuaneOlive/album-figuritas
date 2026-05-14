@@ -257,6 +257,118 @@ Luego: `pm2 restart album-mundial`
 
 ---
 
+## Por qué usar Nginx delante de Node.js
+
+### Arquitectura
+
+```
+Internet
+    ↓  HTTP :80 / HTTPS :443
+Nginx  (proceso nativo, usuario www-data)
+    ↓  HTTP 127.0.0.1:3000
+Express / Node.js  (proceso PM2, usuario deploy)
+    ↓  TCP 127.0.0.1:5432
+PostgreSQL  (proceso nativo, usuario postgres)
+```
+
+> **Regla:** ningún proceso interno (Node.js ni PostgreSQL) debe escuchar en `0.0.0.0`.
+> Solo Nginx habla con el exterior.
+
+---
+
+### SSL/TLS termination
+
+Node.js puede manejar HTTPS directamente, pero implica que cada proceso Node gestiona sus propios certificados. Nginx centraliza la terminación TLS: negocia HTTPS con el browser, y reenvía tráfico HTTP plano a Node por la red local. Los certificados de Let's Encrypt (`certbot --nginx`) los gestiona Nginx automáticamente, incluida la renovación.
+
+Sin Nginx, habría que configurar certificados dentro de la app Express, renovarlos manualmente, y reiniciar el proceso ante cada renovación.
+
+---
+
+### Reverse proxy
+
+Nginx actúa de intermediario entre el cliente y Express. Beneficios concretos:
+
+- **Buffering de requests**: Nginx acumula el body completo antes de pasarlo a Node. Protege contra clientes lentos (*slow-client attacks*) que mantienen conexiones abiertas para agotar los workers de Node.
+- **Headers de seguridad**: se pueden agregar `X-Frame-Options`, `X-Content-Type-Options`, `Strict-Transport-Security` en un solo lugar sin tocar el código de la app.
+- **Timeouts configurables**: si Node tarda más de N segundos, Nginx corta la conexión sin que el proceso quede colgado.
+
+---
+
+### Seguridad
+
+| Sin Nginx | Con Nginx |
+|---|---|
+| Node.js expuesto en `:3000` o `:443` directamente | Node solo escucha en `127.0.0.1:3000` |
+| Cualquier scanner encuentra el framework (Express headers) | Nginx oculta los headers internos |
+| TLS gestionado por el proceso de app | TLS centralizado en Nginx |
+| Un crash de la app expone el puerto | Nginx retorna 502 Bad Gateway mientras PM2 reinicia |
+
+Con UFW configurado, el puerto 3000 está cerrado al exterior. La única forma de llegar a Express desde internet es a través de Nginx. Aunque un atacante sepa que Express corre en :3000, no puede conectarse.
+
+---
+
+### Múltiples apps en el mismo VPS
+
+Este VPS ya tiene n8n corriendo en otro `server_name`. Nginx maneja ambas apps con bloques separados:
+
+```nginx
+server {
+    server_name logiscom-n8n.duckdns.org;
+    location / { proxy_pass http://localhost:5678; }
+}
+
+server {
+    server_name 161.97.139.241;   # o album.dominio.com
+    location / { proxy_pass http://127.0.0.1:3000; }
+}
+```
+
+Sin Nginx, dos apps no pueden escuchar en el puerto 80 al mismo tiempo.
+
+---
+
+### Logs
+
+Nginx escribe logs de acceso y error independientes de los logs de la app:
+
+```
+/var/log/nginx/access.log   → todas las requests entrantes (IP, ruta, status, bytes)
+/var/log/nginx/error.log    → errores de proxy, TLS, configuración
+```
+
+PM2 escribe sus propios logs de la app (`pm2 logs album-mundial`). Tener ambas capas permite separar "el browser recibió un 200" (Nginx) de "la app procesó correctamente el request" (PM2).
+
+---
+
+### Rate limiting (futuro)
+
+Nginx tiene módulo de rate limiting nativo. Cuando la app tenga autenticación, se puede agregar sin tocar el código:
+
+```nginx
+limit_req_zone $binary_remote_addr zone=api:10m rate=30r/m;
+
+location /api/ {
+    limit_req zone=api burst=10 nodelay;
+    proxy_pass http://127.0.0.1:3000;
+}
+```
+
+Esto limita a 30 requests por minuto por IP antes de que el request llegue a Node.
+
+---
+
+### Puertos expuestos — resumen
+
+| Puerto | Quién escucha | Accesible desde |
+|---|---|---|
+| 80 | Nginx | Internet (público) |
+| 443 | Nginx | Internet (cuando haya dominio) |
+| 22 | SSH | Internet (administración) |
+| 3000 | Express | Solo `127.0.0.1` — no expuesto |
+| 5432 | PostgreSQL | Solo `127.0.0.1` — no expuesto |
+
+---
+
 ## VPS — Firewall UFW
 
 ```bash
