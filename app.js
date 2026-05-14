@@ -137,6 +137,6 @@ app.patch('/api/figuritas/:nombre', async (req, res) => {
   }
 });
 
-app.listen(serverPort, () => {
-  console.log(`Servidor de la API corriendo en http://localhost:${serverPort}`);
+app.listen(serverPort, '127.0.0.1', () => {
+  console.log(`Servidor de la API corriendo en http://127.0.0.1:${serverPort}`);
 });
