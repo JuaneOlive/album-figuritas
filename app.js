@@ -52,12 +52,23 @@ function buildStickerFilters(query) {
 async function findStickers(query) {
   const stickerFilters = buildStickerFilters(query);
 
-  const stickers = await Sticker.findAll({
+  const limit = Math.min(parseInt(query.limit) || 50, 500);
+  const offset = Math.max(parseInt(query.offset) || 0, 0);
+
+  const { count, rows } = await Sticker.findAndCountAll({
     where: stickerFilters,
-    include: [{ model: StickerType, as: 'tipo' }]
+    include: [{
+      model: StickerType,
+      as: 'tipo',
+      attributes: ['id', 'nombre']
+    }],
+    attributes: ['id', 'numero', 'nombre', 'obtenida', 'cantidad', 'codigo', 'grupo', 'tipoId'],
+    limit,
+    offset,
+    order: [['id', 'ASC']]
   });
 
-  return stickers;
+  return { stickers: rows, total: count, limit, offset };
 }
 
 function validatePatchStickerParams(stickerName, operation) {
@@ -80,15 +91,12 @@ async function findStickerByName(stickerName) {
 function applyStickerOperation(sticker, operation) {
   if (operation === 'add') {
     sticker.cantidad += 1;
-    sticker.obtenida = true;
-    return;
+  } else {
+    if (sticker.cantidad <= 0) {
+      throw createBadRequestError('No se pueden tener cantidades negativas');
+    }
+    sticker.cantidad -= 1;
   }
-
-  if (sticker.cantidad <= 0) {
-    throw createBadRequestError('No se pueden tener cantidades negativas');
-  }
-
-  sticker.cantidad -= 1;
   sticker.obtenida = sticker.cantidad > 0;
 }
 
@@ -116,8 +124,8 @@ app.get('/health', (req, res) => {
 
 app.get('/api/figuritas', async (req, res) => {
   try {
-    const stickers = await findStickers(req.query);
-    res.status(200).json(stickers);
+    const result = await findStickers(req.query);
+    res.status(200).json(result);
   } catch (error) {
     console.error(error);
     res.status(error.statusCode || 500).json({ error: error.message || 'Error al obtener las figuritas' });
