@@ -6,7 +6,7 @@ import { initializeStickers } from './figuritasSeeder.js';
 async function initializeDatabase() {
     try {
         await databaseConnection.authenticate();
-        await databaseConnection.sync({force:true});
+        await databaseConnection.sync();
         await initializeStickerTypes();
         await initializeStickers();
         console.log("Base de datos creada e inicializada");

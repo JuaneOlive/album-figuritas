@@ -7,7 +7,7 @@ import {
     updateRenderedStickerQuantity
 } from "./tableButtons.js";
 
-const STICKERS_API_URL = "http://localhost:3000/api/figuritas";
+const STICKERS_API_URL = "/api/figuritas";
 
 function buildStickersQueryString(filters = {}) {
     const queryParams = {};
