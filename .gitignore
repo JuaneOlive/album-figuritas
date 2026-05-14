@@ -1,6 +1,11 @@
-# Ignorar carpeta node_modules
+# Dependencias
 node_modules/
 
-# Ignorar bases de datos locales
+# Variables de entorno — nunca commitear
+.env
+.env.local
+.env*.local
+
+# Bases de datos locales
 data/*.sqlite
 data/*.sqlite-*
