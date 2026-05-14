@@ -110,6 +110,10 @@ async function updateSticker(stickerName, operation) {
   return sticker;
 }
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.get('/api/figuritas', async (req, res) => {
   try {
     const stickers = await findStickers(req.query);
