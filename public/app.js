@@ -4,12 +4,15 @@ import {
     clearStickersTable,
     initTableButtons,
     renderStickersTable,
+    appendStickersToTable,
     updateRenderedStickerQuantity
 } from "./tableButtons.js";
+import { createLazyLoader } from "./lazyLoad.js";
 
 const STICKERS_API_URL = "/api/figuritas";
+let currentLazyLoader = null;
 
-function buildStickersQueryString(filters = {}) {
+function buildStickersQueryString(filters = {}, pagination = {}) {
     const queryParams = {};
 
     if (filters.obtenida !== undefined) {
@@ -18,6 +21,14 @@ function buildStickersQueryString(filters = {}) {
 
     if (filters.codigo !== undefined) {
         queryParams.codigo = filters.codigo;
+    }
+
+    if (pagination.limit !== undefined) {
+        queryParams.limit = pagination.limit;
+    }
+
+    if (pagination.offset !== undefined) {
+        queryParams.offset = pagination.offset;
     }
 
     const queryString = new URLSearchParams(queryParams).toString();
@@ -73,9 +84,59 @@ async function patchSticker(stickerName, operation) {
     return res.json();
 }
 
+async function getStickersPage(filters, offset = 0) {
+    const url = STICKERS_API_URL + buildStickersQueryString(filters, { limit: 50, offset });
+    const res = await fetch(url);
+
+    if (!res.ok) {
+        console.error("Error al cargar figuritas:", res.statusText);
+        return { items: [], hasMore: false, total: 0 };
+    }
+
+    const data = await res.json();
+    const stickers = data.stickers || data;
+    const items = Array.isArray(stickers) ? stickers : [];
+
+    const mappedItems = items.map(item => ({
+        nombre: item.nombre,
+        tipo: item.tipo,
+        cantidad: item.cantidad
+    }));
+
+    return {
+        items: mappedItems,
+        hasMore: data.offset !== undefined ? (data.offset + data.limit < data.total) : false,
+        total: data.total || items.length
+    };
+}
+
 async function loadStickers(filters) {
-    const stickers = await getStickers(filters);
-    renderStickersTable(stickers);
+    if (currentLazyLoader) {
+        currentLazyLoader.stop();
+    }
+
+    const firstPage = await getStickersPage(filters, 0);
+
+    if (firstPage.items.length === 0) {
+        renderStickersTable([]);
+        return;
+    }
+
+    renderStickersTable(firstPage.items);
+
+    currentLazyLoader = createLazyLoader({
+        sentinel: document.getElementById("stickersLazySentinel"),
+        fetcher: async (offset) => {
+            return getStickersPage(filters, offset);
+        },
+        renderer: (items) => {
+            appendStickersToTable(items);
+        },
+        onError: (error) => {
+            console.error("Error al cargar figuritas adicionales:", error);
+            alert("Error al cargar más figuritas. Intenta nuevamente.");
+        }
+    });
 }
 
 async function initStickerSelect() {

@@ -53,6 +53,45 @@ export function updateRenderedStickerQuantity(updatedSticker) {
     }
 }
 
+export function appendStickersToTable(stickers) {
+    const tableBody = document.getElementById("stickersTableBody");
+
+    if (tableBody.querySelector(".fwc-table-empty")) {
+        tableBody.innerHTML = "";
+    }
+
+    stickers.forEach(sticker => {
+        const actionCell = document.createElement("td");
+        actionCell.className = "fwc-table__actions";
+        const addButton = document.createElement("button");
+        const removeButton = document.createElement("button");
+
+        addButton.type = "button";
+        addButton.textContent = "+";
+        addButton.dataset.operation = "add";
+        addButton.dataset.nombre = sticker.nombre;
+        addButton.className = "fwc-table-add-button";
+
+        removeButton.type = "button";
+        removeButton.textContent = "-";
+        removeButton.dataset.nombre = sticker.nombre;
+        removeButton.dataset.operation = "remove";
+        removeButton.className = "fwc-table-remove-button";
+
+        actionCell.appendChild(addButton);
+        actionCell.appendChild(removeButton);
+
+        const row = document.createElement("tr");
+        row.dataset.nombre = sticker.nombre;
+        row.innerHTML = `<td>${sticker.nombre}</td>
+                         <td>${sticker.tipo.nombre}</td>
+                         <td data-sticker-quantity>${sticker.cantidad}</td>
+                         `;
+        row.appendChild(actionCell);
+        tableBody.appendChild(row);
+    });
+}
+
 export function initTableButtons(onPatchSticker) {
     const tableBody = document.getElementById("stickersTableBody");
 
