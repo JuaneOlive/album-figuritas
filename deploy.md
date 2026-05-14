@@ -302,6 +302,117 @@ crontab -e
 
 ---
 
+## Riesgos de producción
+
+| # | Riesgo | Gravedad |
+|---|---|---|
+| R-01 | `sync({ force: true })` destruye datos | CRÍTICA |
+| R-02 | `npm start` encadenado a `init-db` | CRÍTICA |
+| R-03 | `localhost` hardcodeado en el frontend | CRÍTICA |
+| R-04 | `.env` commiteado al repositorio | ALTA |
+| R-05 | PostgreSQL expuesto a internet | ALTA |
+| R-06 | CORS abierto sin restricción | MEDIA |
+| R-07 | API sin autenticación | MEDIA |
+| R-08 | Sin migraciones formales | MEDIA |
+
+---
+
+### R-01 — `sync({ force: true })` destruye datos
+
+**Gravedad:** CRÍTICA
+
+**Qué puede pasar:** `sync({ force: true })` ejecuta `DROP TABLE IF EXISTS` en cada tabla antes de recrearla. Si está en el script de arranque, cada restart de PM2 o deploy borra todos los datos del usuario. Pérdida total e irrecuperable si no hay backup.
+
+**Mitigación actual:** `sync()` sin opciones — solo crea tablas si no existen, nunca las toca si ya existen. Seeders con guards idempotentes (`if count > 0 → skip`). `npm start` no llama a `init-db`.
+
+**Mejora pendiente:** implementar Sequelize CLI migrations para cambios de esquema controlados y auditables.
+
+---
+
+### R-02 — `npm start` encadenado a `init-db`
+
+**Gravedad:** CRÍTICA
+
+**Qué puede pasar:** si el script `start` corre `init-db` antes de levantar la app, cualquier restart automático de PM2 ante un crash dispararía el seeder. Aunque los seeders son idempotentes, el riesgo combinado con un `force: true` residual sería pérdida total de datos en producción sin intervención humana.
+
+**Mitigación actual:** `"start": "node app.js"` — sin encadenamiento. `init-db` solo existe como `npm run init-db`, a correr manualmente una vez en el deploy inicial.
+
+**Mejora pendiente:** documentar explícitamente en el README que `npm run init-db` es operación de una sola vez.
+
+---
+
+### R-03 — `localhost` hardcodeado en el frontend
+
+**Gravedad:** CRÍTICA
+
+**Qué puede pasar:** `fetch("http://localhost:3000/api/figuritas")` en el browser del usuario final intenta conectarse al `localhost` de *su propia máquina*, no al servidor. Todos los GET y PATCH fallan silenciosamente. La app es 100% no funcional en producción sin que el servidor tire ningún error.
+
+**Mitigación actual:** URL relativa `/api/figuritas` — el browser resuelve contra el origen de la página. Funciona detrás de cualquier dominio, IP o proxy sin cambios de código.
+
+**Mejora pendiente:** ninguna. Solución definitiva.
+
+---
+
+### R-04 — `.env` commiteado al repositorio
+
+**Gravedad:** ALTA
+
+**Qué puede pasar:** credenciales de base de datos, claves de API y passwords quedan expuestos en el historial de git de forma permanente. Incluso si se borra el archivo después, `git log` los preserva. Si el repo es público o compartido con la cátedra, compromete el servidor.
+
+**Mitigación actual:** `.env` y `.env*.local` en `.gitignore`. `.env.example` commiteado como template sin valores reales.
+
+**Mejora pendiente:** agregar un pre-commit hook que detecte patrones de credenciales antes de commitear (herramienta: `git-secrets` o `detect-secrets`).
+
+---
+
+### R-05 — PostgreSQL expuesto a internet (puerto 5432)
+
+**Gravedad:** ALTA
+
+**Qué puede pasar:** PostgreSQL expuesto en `0.0.0.0:5432` permite ataques de fuerza bruta sobre el usuario de DB, exploits de versión, y acceso directo a los datos sin pasar por la capa de aplicación. Es uno de los vectores de ataque más comunes en VPS mal configurados.
+
+**Mitigación actual:** `listen_addresses = 'localhost'` en PostgreSQL (predeterminado en Ubuntu). Puerto 5432 no abierto en UFW. Verificación explícita con `ss -tlnp | grep 5432` en el checklist de deploy.
+
+**Mejora pendiente:** considerar autenticación por certificado (`pg_hba.conf`) en lugar de solo password si el proyecto escala a datos sensibles.
+
+---
+
+### R-06 — CORS abierto sin restricción
+
+**Gravedad:** MEDIA
+
+**Qué puede pasar:** `cors()` sin opciones responde `Access-Control-Allow-Origin: *` a cualquier origen. Cualquier sitio web externo puede consumir la API y modificar figuritas de cualquier usuario (sin autenticación, el impacto es mayor).
+
+**Mitigación actual:** `cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000' })`. En producción, `CORS_ORIGIN=http://161.97.139.241` restringe al origen real. Wildcard eliminado.
+
+**Mejora pendiente:** cuando se implemente autenticación, revisar política CORS por ruta — las rutas públicas pueden ser más permisivas que las protegidas.
+
+---
+
+### R-07 — API sin autenticación
+
+**Gravedad:** MEDIA (aceptable en el estado actual, crítica con usuarios múltiples)
+
+**Qué puede pasar:** cualquier persona que conozca la IP puede hacer `PATCH /api/figuritas/ARG1?operation=add` y modificar las figuritas. Sin sesiones, no hay forma de distinguir quién hizo qué. Con múltiples usuarios, un usuario puede modificar el álbum de otro.
+
+**Mitigación actual:** app de uso personal/académico. El acceso está limitado por el hecho de que la IP no es pública en ningún directorio. CORS restringe el consumo desde otros sitios.
+
+**Mejora pendiente:** implementar autenticación (JWT o sessions) antes de abrir la app a múltiples usuarios. La tabla de usuarios y la relación `figuritas_usuario` están planificadas para el próximo merge.
+
+---
+
+### R-08 — Sin migraciones formales de esquema
+
+**Gravedad:** MEDIA
+
+**Qué puede pasar:** cambios en los modelos Sequelize (agregar columna, cambiar tipo, renombrar) no tienen historia de versiones. Para aplicar un cambio en producción las opciones son: `sync({ alter: true })` (impredecible en Postgres, puede borrar datos), `sync({ force: true })` (destruye todo), o SQL manual (sin auditabilidad).
+
+**Mitigación actual:** el esquema actual es estable (2 tablas, sin cambios previstos a corto plazo). `sync()` sin opciones crea tablas si no existen y no toca las existentes.
+
+**Mejora pendiente:** implementar Sequelize CLI migrations (`npx sequelize-cli migration:generate`) antes de cualquier cambio de esquema en producción. Obligatorio antes del merge de cuentas de usuario.
+
+---
+
 ## Verificación final
 
 ```bash
