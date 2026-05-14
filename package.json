@@ -1,18 +1,22 @@
 {
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "sequelize": "^6.37.8",
-    "sqlite3": "^6.0.1"
+    "pg": "^8.20.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
   },
   "name": "album-mundial",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":   "node app.js",
+    "dev":     "node --watch app.js",
     "init-db": "node scripts/initDb.js",
-    "start": "npm run init-db ; node app.js"
+    "lint":    "eslint .",
+    "test":    "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import Sticker from './models/Figurita.js';
@@ -6,7 +7,9 @@ import StickerType from './models/TipoFigurita.js';
 const app = express();
 const serverPort = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
+}));
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -107,6 +110,10 @@ async function updateSticker(stickerName, operation) {
   return sticker;
 }
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.get('/api/figuritas', async (req, res) => {
   try {
     const stickers = await findStickers(req.query);
@@ -130,6 +137,6 @@ app.patch('/api/figuritas/:nombre', async (req, res) => {
   }
 });
 
-app.listen(serverPort, () => {
-  console.log(`Servidor de la API corriendo en http://localhost:${serverPort}`);
+app.listen(serverPort, '127.0.0.1', () => {
+  console.log(`Servidor de la API corriendo en http://127.0.0.1:${serverPort}`);
 });
