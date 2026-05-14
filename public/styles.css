@@ -154,32 +154,59 @@ body::after {
 /* ─── TICKER ──────────────────────────────────────────────────────────── */
 
 .fwc-ticker {
+  position: relative;
   overflow: hidden;
   background-color: var(--fwc-usa-mid);
-  padding: 0.5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
   border-bottom: 3px solid var(--fwc-usa-deep);
+}
+
+/* fade lateral — efecto profesional de TV broadcast */
+.fwc-ticker::before,
+.fwc-ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  z-index: 2;
+  pointer-events: none;
+}
+.fwc-ticker::before {
+  left: 0;
+  background: linear-gradient(to right, var(--fwc-usa-mid) 20%, transparent);
+}
+.fwc-ticker::after {
+  right: 0;
+  background: linear-gradient(to left, var(--fwc-usa-mid) 20%, transparent);
 }
 
 .fwc-ticker__track {
   display: flex;
-  gap: 0;              /* el espacio lo carga cada item con margin-right */
-  width: max-content;
-  animation: ticker-scroll 25s linear infinite;
-  will-change: transform;
+  width: max-content;       /* track = suma exacta de sus dos sets */
+  animation: fwc-ticker-scroll 32s linear infinite;
+  will-change: transform;   /* capa GPU propia — no se resetea por DOM mutations */
+}
+
+.fwc-ticker__set {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
 }
 
 .fwc-ticker__item {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-right: 3rem;  /* trailing space propio → total = 2× mitad exacto */
+  gap: 0.6rem;
+  padding: 0.58rem 2rem;
   white-space: nowrap;
   font-family: var(--fwc-font-body);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fwc-white);
+  border-right: 1px solid rgba(255,255,255,0.18);
 }
 
 .fwc-ticker__dot {
@@ -187,12 +214,20 @@ body::after {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.55);
+  flex-shrink: 0;
 }
 
-@keyframes ticker-scroll {
+@keyframes fwc-ticker-scroll {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }  /* mueve exactamente 1 set → loop perfecto */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fwc-ticker__track {
+    animation: none;
+    overflow-x: auto;
+  }
 }
 
 /* ─── CONTENEDOR PRINCIPAL ────────────────────────────────────────────── */

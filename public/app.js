@@ -97,13 +97,7 @@ function initMainFilterButtons() {
 }
 
 function initStickerForm() {
-    document.getElementById("addStickerForm").addEventListener("submit", (event) => {
-        event.preventDefault();
-    });
-
-    document.getElementById("addStickerButton").addEventListener("click", async (event) => {
-        event.preventDefault();
-        event.stopPropagation();
+    document.getElementById("addStickerButton").addEventListener("click", async () => {
         const stickerName = document.getElementById("addStickerSelect").value;
         const updatedSticker = await patchSticker(stickerName, "add");
 
@@ -112,9 +106,7 @@ function initStickerForm() {
         }
     });
 
-    document.getElementById("removeStickerButton").addEventListener("click", async (event) => {
-        event.preventDefault();
-        event.stopPropagation();
+    document.getElementById("removeStickerButton").addEventListener("click", async () => {
         const stickerName = document.getElementById("addStickerSelect").value;
         const updatedSticker = await patchSticker(stickerName, "remove");
 

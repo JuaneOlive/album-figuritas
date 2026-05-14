@@ -28,19 +28,30 @@
   </nav>
 
   <!-- ── TICKER ─────────────────────────────────────────────────────── -->
-  <div class="fwc-ticker" role="marquee" aria-label="Info del torneo">
+  <div class="fwc-ticker" role="marquee" aria-label="Novedades del torneo">
     <div class="fwc-ticker__track">
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>We Are 26</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 equipos · 3 países · 16 sedes</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
-      <!-- duplicado para loop seamless -->
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>We Are 26</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 equipos · 3 países · 16 sedes</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
-      <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
+      <!-- Set 1 — contenido principal -->
+      <div class="fwc-ticker__set">
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>WE ARE 26™</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 Equipos · 3 Países · 16 Sedes</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>104 Partidos en Total</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>Final: MetLife Stadium · New York/NJ</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>Inaugural: Ciudad de México</span>
+      </div>
+      <!-- Set 2 — clon exacto para loop infinito -->
+      <div class="fwc-ticker__set" aria-hidden="true">
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>FIFA World Cup 2026™</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>WE ARE 26™</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>48 Equipos · 3 Países · 16 Sedes</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>11 Jun – 19 Jul 2026</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>USA · Canada · México</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>104 Partidos en Total</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>Final: MetLife Stadium · New York/NJ</span>
+        <span class="fwc-ticker__item"><span class="fwc-ticker__dot"></span>Inaugural: Ciudad de México</span>
+      </div>
     </div>
   </div>
 
@@ -67,7 +78,7 @@
 
 
     <!-- Botonera de países -->
-    <div class="fwc-divider fwc-divider--invisible" aria-hidden="true" id="buttonsCodecontainer"> </div>
+    <div class="fwc-divider fwc-divider--invisible" id="buttonsCodecontainer"></div>
 
     <!-- Tabla -->
     <div class="fwc-table-wrap">
@@ -93,7 +104,7 @@
     <!-- Formulario agregar/quitar -->
     <section class="fwc-form" aria-labelledby="form-title">
       <p class="fwc-form__title" id="form-title">Actualizar figurita</p>
-      <form id="addStickerForm">
+      <div id="addStickerForm">
         <div class="fwc-form__row">
           <div class="fwc-autocomplete">
             <input id="addStickerSelect" name="addStickerSelect" type="text"
@@ -105,7 +116,7 @@
           <button id="addStickerButton"    type="button">+ Agregar</button>
           <button id="removeStickerButton" type="button">– Quitar</button>
         </div>
-      </form>
+      </div>
     </section>
 
   </main>

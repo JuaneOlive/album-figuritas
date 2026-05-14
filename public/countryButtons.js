@@ -6,6 +6,7 @@ export function populateCountryCodeButtons(onCountryCodeSelected) {
 
     stickerCountryCodes.forEach(countryCode => {
         const button = document.createElement("button");
+        button.type = "button";
         button.textContent = countryCode;
         button.id = `filter-${countryCode}`;
         button.className = `fwc-select-country-button`;
