@@ -625,6 +625,24 @@ tbody tr.missing td:nth-child(3) {
   transition: opacity 150ms ease, transform 150ms ease;
 }
 
+/* Mobile: dropdown aparece ARRIBA del input para evitar salirse de pantalla */
+@media (max-width: 640px) {
+  .fwc-autocomplete__list {
+    top: auto;
+    bottom: 100%;
+    margin: 0 0 2px 0;
+    max-height: 140px;
+    border-top: 3px solid var(--fwc-usa-mid);
+    border-bottom: none;
+    box-shadow: 0 -4px 0 var(--fwc-usa-deep);
+    transform: translateY(6px);
+  }
+
+  .fwc-autocomplete__list.is-open {
+    transform: translateY(0);
+  }
+}
+
 .fwc-autocomplete__list.is-open {
   opacity: 1;
   pointer-events: auto;
