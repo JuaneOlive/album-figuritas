@@ -1,0 +1,22 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ANIMATIONS — Keyframes y duraciones globales
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Ticker scrolling animation */
+@keyframes fwc-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Media query para reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .fwc-ticker__track {
+    animation: none;
+    overflow-x: auto;
+  }
+}

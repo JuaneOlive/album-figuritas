@@ -1,0 +1,19 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   A11Y — Accesibilidad global
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Reducir movimiento para usuarios que lo prefieren */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible — outline en elementos interactivos */
+:focus-visible {
+  outline: 3px solid var(--fwc-usa-light);
+  outline-offset: 2px;
+}

@@ -1,0 +1,10 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   DIVIDER — Línea separadora con gradiente tricolor
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fwc-divider {
+  height: 4px;
+  border: none;
+  background: var(--fwc-gradient-tri);
+  margin: 1.5rem 0;
+}

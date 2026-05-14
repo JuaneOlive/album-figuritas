@@ -1,0 +1,62 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE — Media queries centralizadas para todos los componentes
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Mobile: max-width 640px */
+@media (max-width: 640px) {
+  /* Navigation */
+  .fwc-nav {
+    padding: 0.75rem 1rem;
+  }
+
+  .fwc-nav__flags {
+    display: none;
+  }
+
+  /* Container */
+  .fwc-main {
+    padding: 1.5rem 1rem 10rem;
+  }
+
+  /* Filters */
+  .fwc-filter-bar {
+    gap: 0.5rem;
+  }
+
+  /* Forms */
+  .fwc-form__row {
+    flex-direction: column;
+  }
+
+  #addStickerSelect {
+    flex: 1 1 100%;
+  }
+
+  /* Autocomplete dropdown (aparece arriba en móvil) */
+  .fwc-autocomplete__list {
+    top: auto;
+    bottom: 100%;
+    margin: 0 0 2px 0;
+    max-height: 140px;
+    border-top: 3px solid var(--fwc-usa-mid);
+    border-bottom: none;
+    box-shadow: 0 -4px 0 var(--fwc-usa-deep);
+    transform: translateY(6px);
+  }
+
+  .fwc-autocomplete__list.is-open {
+    transform: translateY(0);
+  }
+
+  /* Country buttons */
+  #buttonsCodecontainer {
+    gap: 0.35rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .fwc-select-country-button {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    min-width: 2.7rem;
+  }
+}

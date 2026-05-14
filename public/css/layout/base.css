@@ -1,0 +1,30 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   BASE LAYOUT — Fondos, patrones decorativos, z-index
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Patrón de fondo: grilla de 48 unidades FIFA */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px, 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Estampas de 16 ciudades sede — fondo decorativo */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-repeat: repeat;
+  background-size: 480px 480px;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='480'><g fill='none' stroke-width='2'><g transform='translate(10,18)'><rect width='16' height='16' stroke='%23009688'/><circle cx='8' cy='8' r='4.5' stroke='%23009688' stroke-width='1.5'/></g><g transform='translate(135,35)'><rect width='16' height='16' stroke='%23E8930A'/><circle cx='8' cy='8' r='4.5' stroke='%23E8930A' stroke-width='1.5'/></g><g transform='translate(255,12)'><rect width='16' height='16' stroke='%23C5E000'/><circle cx='8' cy='8' r='4.5' stroke='%23C5E000' stroke-width='1.5'/></g><g transform='translate(378,28)'><rect width='16' height='16' stroke='%2300C4B4'/><circle cx='8' cy='8' r='4.5' stroke='%2300C4B4' stroke-width='1.5'/></g><g transform='translate(22,143)'><rect width='16' height='16' stroke='%233A5BC7'/><circle cx='8' cy='8' r='4.5' stroke='%233A5BC7' stroke-width='1.5'/></g><g transform='translate(143,128)'><rect width='16' height='16' stroke='%23E61D25'/><circle cx='8' cy='8' r='4.5' stroke='%23E61D25' stroke-width='1.5'/></g><g transform='translate(262,150)'><rect width='16' height='16' stroke='%23F4533E'/><circle cx='8' cy='8' r='4.5' stroke='%23F4533E' stroke-width='1.5'/></g><g transform='translate(382,138)'><rect width='16' height='16' stroke='%23FF6D00'/><circle cx='8' cy='8' r='4.5' stroke='%23FF6D00' stroke-width='1.5'/></g><g transform='translate(12,263)'><rect width='16' height='16' stroke='%23E91E8C'/><circle cx='8' cy='8' r='4.5' stroke='%23E91E8C' stroke-width='1.5'/></g><g transform='translate(142,248)'><rect width='16' height='16' stroke='%2300C8B4'/><circle cx='8' cy='8' r='4.5' stroke='%2300C8B4' stroke-width='1.5'/></g><g transform='translate(248,268)'><rect width='16' height='16' stroke='%234F7AC8'/><circle cx='8' cy='8' r='4.5' stroke='%234F7AC8' stroke-width='1.5'/></g><g transform='translate(372,252)'><rect width='16' height='16' stroke='%231E72D4'/><circle cx='8' cy='8' r='4.5' stroke='%231E72D4' stroke-width='1.5'/></g><g transform='translate(28,382)'><rect width='16' height='16' stroke='%23CC0000'/><circle cx='8' cy='8' r='4.5' stroke='%23CC0000' stroke-width='1.5'/></g><g transform='translate(148,372)'><rect width='16' height='16' stroke='%23B8A000'/><circle cx='8' cy='8' r='4.5' stroke='%23B8A000' stroke-width='1.5'/></g><g transform='translate(262,388)'><rect width='16' height='16' stroke='%230066CC'/><circle cx='8' cy='8' r='4.5' stroke='%230066CC' stroke-width='1.5'/></g><g transform='translate(380,378)'><rect width='16' height='16' stroke='%234A9A5A'/><circle cx='8' cy='8' r='4.5' stroke='%234A9A5A' stroke-width='1.5'/></g></g></svg>");
+}

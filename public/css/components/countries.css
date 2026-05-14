@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   COUNTRIES — Botonera de 50 países (FWC, CC + 48 countries)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#buttonsCodecontainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  height: auto;
+  background: none;
+  border: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+}
+
+.fwc-select-country-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.3rem 0.65rem;
+  font-family: var(--fwc-font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  background-color: var(--btn-bg, var(--fwc-gray-800));
+  border: 2px solid var(--btn-bg, var(--fwc-gray-800));
+  border-radius: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform  120ms ease,
+    box-shadow 120ms ease,
+    filter     120ms ease;
+}
+
+.fwc-select-country-button:hover {
+  filter: brightness(0.75);
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.fwc-select-country-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+  filter: brightness(0.6);
+}
