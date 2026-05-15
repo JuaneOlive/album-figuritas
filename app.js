@@ -1,22 +1,23 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import compression from 'compression';
 import Sticker from './models/Figurita.js';
 import StickerType from './models/TipoFigurita.js';
 
 const app = express();
 const serverPort = process.env.PORT || 3000;
 
-app.use(compression());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
 }));
 app.use(express.json());
-app.use(express.static('public', {
-  maxAge: '1d',
-  etag: false
-}));
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === '/index.html') {
+    res.set('Cache-Control', 'public, max-age=3600');
+  }
+  next();
+});
+app.use(express.static('public'));
 
 function createBadRequestError(message) {
   const error = new Error(message);
@@ -57,29 +58,12 @@ function buildStickerFilters(query) {
 async function findStickers(query) {
   const stickerFilters = buildStickerFilters(query);
 
-  const limit = Math.min(parseInt(query.limit) || 50, 500);
-  const offset = Math.max(parseInt(query.offset) || 0, 0);
-
-  const t0 = Date.now();
-  const { count, rows } = await Sticker.findAndCountAll({
+  const stickers = await Sticker.findAll({
     where: stickerFilters,
-    include: [{
-      model: StickerType,
-      as: 'tipo',
-      attributes: ['id', 'nombre']
-    }],
-    attributes: ['id', 'numero', 'nombre', 'obtenida', 'cantidad', 'codigo', 'grupo', 'tipoId'],
-    limit,
-    offset,
-    order: [['id', 'ASC']]
+    include: [{ model: StickerType, as: 'tipo' }]
   });
-  const elapsed = Date.now() - t0;
 
-  if (elapsed > 200) {
-    console.warn(`[SLOW] findStickers took ${elapsed}ms - filters: ${JSON.stringify(stickerFilters)}, limit: ${limit}, offset: ${offset}`);
-  }
-
-  return { stickers: rows, total: count, limit, offset };
+  return stickers;
 }
 
 function validatePatchStickerParams(stickerName, operation) {
@@ -102,12 +86,15 @@ async function findStickerByName(stickerName) {
 function applyStickerOperation(sticker, operation) {
   if (operation === 'add') {
     sticker.cantidad += 1;
-  } else {
-    if (sticker.cantidad <= 0) {
-      throw createBadRequestError('No se pueden tener cantidades negativas');
-    }
-    sticker.cantidad -= 1;
+    sticker.obtenida = true;
+    return;
   }
+
+  if (sticker.cantidad <= 0) {
+    throw createBadRequestError('No se pueden tener cantidades negativas');
+  }
+
+  sticker.cantidad -= 1;
   sticker.obtenida = sticker.cantidad > 0;
 }
 
@@ -130,14 +117,14 @@ async function updateSticker(stickerName, operation) {
 }
 
 app.get('/health', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=60');
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.get('/api/figuritas', async (req, res) => {
   try {
-    res.set('Cache-Control', 'public, max-age=300');
-    const result = await findStickers(req.query);
-    res.status(200).json(result);
+    const stickers = await findStickers(req.query);
+    res.status(200).json(stickers);
   } catch (error) {
     console.error(error);
     res.status(error.statusCode || 500).json({ error: error.message || 'Error al obtener las figuritas' });
