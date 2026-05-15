@@ -119,3 +119,11 @@ export function initStickerAutocomplete(stickers) {
         }
     });
 }
+
+export function clearStickerInput() {
+    const input = document.getElementById("addStickerSelect");
+    const dropdown = document.getElementById("stickersDropdown");
+
+    input.value = "";
+    dropdown.classList.remove("is-open");
+}

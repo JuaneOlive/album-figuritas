@@ -1,5 +1,5 @@
 import { populateCountryCodeButtons } from "./countryButtons.js";
-import { initStickerAutocomplete } from "./select.js";
+import { initStickerAutocomplete, clearStickerInput } from "./select.js";
 import {
     clearStickersTable,
     initTableButtons,
@@ -103,6 +103,7 @@ function initStickerForm() {
 
         if (updatedSticker) {
             updateRenderedStickerQuantity(updatedSticker);
+            clearStickerInput();
         }
     });
 
@@ -112,6 +113,7 @@ function initStickerForm() {
 
         if (updatedSticker) {
             updateRenderedStickerQuantity(updatedSticker);
+            clearStickerInput();
         }
     });
 }
