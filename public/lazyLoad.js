@@ -43,7 +43,10 @@ export function createLazyLoader(options) {
         } finally {
             state.isLoading = false;
         }
-    }, { threshold });
+    }, {
+        threshold,
+        rootMargin: '0px 0px 500px 0px'
+    });
 
     observer.observe(sentinel);
 
