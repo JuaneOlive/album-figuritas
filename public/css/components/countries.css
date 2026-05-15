@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   COUNTRIES — Botonera de 50 países (FWC, CC + 48 countries)
+   COUNTRIES — Botonera responsiva: FWC+CC (2) + 48 países en grid
    ═══════════════════════════════════════════════════════════════════════ */
 
 #buttonsCodecontainer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 1.75rem;
   height: auto;
   background: none;
   border: none;
@@ -13,8 +13,41 @@
   padding: 0;
 }
 
+/* Contenedor especial: FWC + CC (2 botones, siempre juntos) */
+.fwc-country-buttons-special {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+
+/* Contenedor de países: grid responsivo 4/6/8/16 columnas */
+.fwc-country-buttons-grid {
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (min-width: 480px) {
+  .fwc-country-buttons-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .fwc-country-buttons-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .fwc-country-buttons-grid {
+    grid-template-columns: repeat(16, 1fr);
+  }
+}
+
+/* Estilos base del botón */
 .fwc-select-country-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   min-width: 3rem;

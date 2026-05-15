@@ -45,7 +45,25 @@ Sticker.init({
     sequelize: databaseConnection,
     modelName: 'Figurita',
     tableName: 'figuritas',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+        {
+            fields: ['codigo'],
+            name: 'idx_figurita_codigo'
+        },
+        {
+            fields: ['obtenida'],
+            name: 'idx_figurita_obtenida'
+        },
+        {
+            fields: ['tipoId'],
+            name: 'idx_figurita_tipoId'
+        },
+        {
+            fields: ['codigo', 'obtenida'],
+            name: 'idx_figurita_codigo_obtenida'
+        }
+    ]
 });
 
 Sticker.belongsTo(StickerType,{as: 'tipo', foreignKey: 'tipoId', field: 'tipoId'});
