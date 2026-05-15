@@ -1,17 +1,22 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import Sticker from './models/Figurita.js';
 import StickerType from './models/TipoFigurita.js';
 
 const app = express();
 const serverPort = process.env.PORT || 3000;
 
+app.use(compression());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
 }));
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('public', {
+  maxAge: '1d',
+  etag: false
+}));
 
 function createBadRequestError(message) {
   const error = new Error(message);
@@ -130,6 +135,7 @@ app.get('/health', (req, res) => {
 
 app.get('/api/figuritas', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=300');
     const result = await findStickers(req.query);
     res.status(200).json(result);
   } catch (error) {
