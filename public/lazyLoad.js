@@ -4,8 +4,8 @@ export function createLazyLoader(options) {
         fetcher,            // async (offset) => {items, hasMore, total}
         renderer,           // (items) => void (agrega items a tabla)
         onError,            // (error) => void
-        initialOffset = 50, // Comenzar después de la primera página
-        threshold = 0.1,    // Aumentado para precarga
+        initialOffset = 100, // Cargar 100 en primera página
+        threshold = 0.01,    // Muy bajo: se activa cuando sentinel está apenas visible
         maxRetries = 3
     } = options;
 
