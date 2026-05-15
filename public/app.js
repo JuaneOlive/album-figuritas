@@ -144,6 +144,14 @@ async function initStickerSelect() {
     initStickerAutocomplete(stickers);
 }
 
+function clearAllStickers() {
+    if (currentLazyLoader) {
+        currentLazyLoader.stop();
+        currentLazyLoader = null;
+    }
+    clearStickersTable();
+}
+
 function initMainFilterButtons() {
     document.getElementById("loadStickersButton").addEventListener("click", () => loadStickers());
 
@@ -155,7 +163,7 @@ function initMainFilterButtons() {
         loadStickers({ obtenida: false });
     });
 
-    document.getElementById("clearStickersButton").addEventListener("click", clearStickersTable);
+    document.getElementById("clearStickersButton").addEventListener("click", clearAllStickers);
 }
 
 function initStickerForm() {
