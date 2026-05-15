@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import { literal } from 'sequelize';
 import Sticker from './models/Figurita.js';
 import StickerType from './models/TipoFigurita.js';
 
@@ -57,9 +58,6 @@ function buildStickerFilters(query) {
 
 async function findStickers(query) {
   const stickerFilters = buildStickerFilters(query);
-
-  const { sequelize } = require('sequelize');
-  const { literal } = require('sequelize');
 
   const stickers = await Sticker.findAll({
     where: stickerFilters,
