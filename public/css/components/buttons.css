@@ -41,7 +41,7 @@
 
 /* Cargar todas — azul USA */
 #loadStickersButton {
-  background-color: var(--fwc-usa-mid);
+  background-color: transparent;
   color: var(--fwc-white);
   border-color: var(--fwc-usa-mid);
 }
@@ -86,6 +86,7 @@
 }
 
 #clearStickersButton:hover {
+  background-color:var(--fwc-gray-800) ;
   color: var(--fwc-white);
   border-color: var(--fwc-gray-400);
   box-shadow: 4px 4px 0 var(--fwc-gray-800);

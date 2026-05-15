@@ -9,3 +9,5 @@ node_modules/
 # Bases de datos locales
 data/*.sqlite
 data/*.sqlite-*
+
+devops
