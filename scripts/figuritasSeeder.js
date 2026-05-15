@@ -63,7 +63,7 @@ function validateRequiredTypes(typesByName) {
 function generateStickers(typesByName) {
   const stickers = [];
 
-  for (let stickerNumber = 1; stickerNumber <= 19; stickerNumber++) {
+  for (let stickerNumber = 0; stickerNumber <= 19; stickerNumber++) {
     stickers.push({
       numero: stickerNumber,
       nombre: `FWC${stickerNumber}`,
