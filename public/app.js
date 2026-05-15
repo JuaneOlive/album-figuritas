@@ -85,7 +85,7 @@ async function patchSticker(stickerName, operation) {
 }
 
 async function getStickersPage(filters, offset = 0) {
-    const url = STICKERS_API_URL + buildStickersQueryString(filters, { limit: 50, offset });
+    const url = STICKERS_API_URL + buildStickersQueryString(filters, { limit: 100, offset });
     const res = await fetch(url);
 
     if (!res.ok) {
@@ -126,6 +126,7 @@ async function loadStickers(filters) {
 
     currentLazyLoader = createLazyLoader({
         sentinel: document.getElementById("stickersLazySentinel"),
+        initialOffset: firstPage.items.length,
         fetcher: async (offset) => {
             return getStickersPage(filters, offset);
         },

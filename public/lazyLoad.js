@@ -4,12 +4,13 @@ export function createLazyLoader(options) {
         fetcher,            // async (offset) => {items, hasMore, total}
         renderer,           // (items) => void (agrega items a tabla)
         onError,            // (error) => void
-        threshold = 0.5,
+        initialOffset = 50, // Comenzar después de la primera página
+        threshold = 0.1,    // Aumentado para precarga
         maxRetries = 3
     } = options;
 
     let state = {
-        offset: 0,
+        offset: initialOffset,
         isLoading: false,
         hasMore: true,
         retries: 0,
