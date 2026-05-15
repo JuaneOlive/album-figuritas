@@ -119,14 +119,3 @@ export function initStickerAutocomplete(stickers) {
         }
     });
 }
-
-export function clearStickerSelect() {
-    const input = document.getElementById("addStickerSelect");
-    if (input) {
-        input.value = "";
-        const dropdown = document.getElementById("stickersDropdown");
-        if (dropdown) {
-            dropdown.classList.remove("is-open");
-        }
-    }
-}
