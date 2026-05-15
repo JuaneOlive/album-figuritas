@@ -55,6 +55,7 @@ async function findStickers(query) {
   const limit = Math.min(parseInt(query.limit) || 50, 500);
   const offset = Math.max(parseInt(query.offset) || 0, 0);
 
+  const t0 = Date.now();
   const { count, rows } = await Sticker.findAndCountAll({
     where: stickerFilters,
     include: [{
@@ -67,6 +68,11 @@ async function findStickers(query) {
     offset,
     order: [['id', 'ASC']]
   });
+  const elapsed = Date.now() - t0;
+
+  if (elapsed > 200) {
+    console.warn(`[SLOW] findStickers took ${elapsed}ms - filters: ${JSON.stringify(stickerFilters)}, limit: ${limit}, offset: ${offset}`);
+  }
 
   return { stickers: rows, total: count, limit, offset };
 }
