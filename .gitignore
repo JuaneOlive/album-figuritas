@@ -5,11 +5,13 @@ node_modules/
 .env
 .env.local
 .env*.local
+.env.development
 
 # Bases de datos locales
 data/*.sqlite
 data/*.sqlite-*
 
-deploy.md
-devops
-.env.development
+# IDE y sistema
+.DS_Store
+.vscode/
+.idea/
