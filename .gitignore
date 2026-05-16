@@ -10,5 +10,6 @@ node_modules/
 data/*.sqlite
 data/*.sqlite-*
 
+deploy.md
 devops
 .env.development

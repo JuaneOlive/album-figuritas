@@ -12,18 +12,21 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-  "dev": "nodemon app.js",
-  "staging": "NODE_ENV=staging node app.js",
-  "start": "node app.js",
-  "init-db": "node scripts/initDb.js",
-  "reset-db": "node scripts/resetDb.js",
-  "lint": "eslint ."
+    "dev": "nodemon app.js",
+    "dev:tunnel": "concurrently \"bash ssh-tunnel.sh\" \"nodemon app.js\"",
+    "staging": "NODE_ENV=staging node app.js",
+    "start": "node app.js",
+    "init-db": "node scripts/initDb.js",
+    "reset-db": "node scripts/resetDb.js",
+    "lint": "eslint .",
+    "tunnel": "bash ssh-tunnel.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "eslint": "^10.3.0",
     "nodemon": "^3.1.14"
   }
